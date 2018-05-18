@@ -41,7 +41,6 @@ const options = {
 };
 //Set up default mongoose connection
 mongoose.connect('mongodb://localhost/divergence', options)
-//mongoose.createConnection('mongodb://localhost/divergence', options)
 .then(
     () => { console.log('Mongo Connected') },
     err => { console.log('Mongo Connection Error') }
@@ -93,7 +92,7 @@ module.exports = function db(data, model) {
             .catch((error) => reject(error))
         }
         if(model === 'getAllPrices') {
-            Price.find(data).sort({localTime: -1}).lean()
+            Price.find(data).sort({localTime: -1}).limit(34).lean()
             .then(response => resolve(response))
             .catch((error) => reject(error))
         }
