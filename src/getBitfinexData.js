@@ -3,7 +3,7 @@ const moment = require('moment');
 const getChannel = require('./getChannel.js');
 const db = require('./db.js');
 const enhanceData = require('./enhanceData');
-const getDivergenceData = require('./getDivergenceData');
+
 
 module.exports = function getBitfinexData(subscriptions) {
     return new Promise((resolve, reject) => {
@@ -55,11 +55,6 @@ module.exports = function getBitfinexData(subscriptions) {
                         const pair = data.pair;
                         const timeFrame = data.timeFrame;
                         enhanceData(pair, timeFrame)
-                        .then((data)=>{
-                            console.log("====================")
-                            console.log(data)
-                            //getDivergenceData()
-                        })
                     }
                 })
                 .catch((error)=>{

@@ -1,13 +1,23 @@
-module.exports = function getDivergenceData(key) {
+const db = require('./db.js');
+const divergence = require('./divergence.js');
+module.exports = function getDivergenceData(subscriptions) {
     return new Promise((resolve, reject) => {
-        try {
-                            /// _getDivergenceData check to make sure we have 20 records for each of the timeframes * the pairs
-                            /// if we have got 20 records then lop over all 20 for both price and rsi, but ignore position 0 and comapre position 1 to i+1
-                            // _divergence if we find a divergence determine if its bearish or bullish
-                            // _slope check the slopes of the rsi and price to ensure its a true divergence
-                            // log divergence if its true
-        } catch(error) {
-            reject(error)
-        }
+        console.log('starting ')
+        setInterval(function(){ 
+            console.log('Checking Data for rsi');
+            subscriptions.forEach(msg => {
+                const key = msg.key;
+                const item = key.split(':');
+                const timeFrame = item[1];
+                const pair = item[2];
+                const data = {timeFrame, pair}
+                db(data, 'getAllPrices')
+                .then((data)=>{
+                    if (data.length >= 20 && data[0].rsi && data[0].priceSpike && data[0].rsiSpike){
+                        divergence(data)
+                    }
+                })
+            });
+        }, 10000);
     })
 }
