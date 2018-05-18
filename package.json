@@ -1,0 +1,27 @@
+{
+  "name": "divergence",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "now": "node src/index.js",
+    "test": "nyc mocha --exit --timeout 180000 test/*.js"
+  },
+  "author": "@bkawk",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-eslint": "^8.2.3",
+    "chai": "^4.1.2",
+    "chai-things": "^0.2.0",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "mocha": "^5.1.1",
+    "nyc": "^11.7.3"
+  },
+  "dependencies": {
+    "@solazu/technicalindicators": "^2.0.12",
+    "moment": "^2.22.1",
+    "mongoose": "^5.1.1",
+    "ws": "^5.1.1"
+  }
+}
