@@ -32,7 +32,7 @@ const options = {
     autoIndex: true, // Don't build indexes
     reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
     reconnectInterval: 500, // Reconnect every 500ms
-    poolSize: 7, // Maintain up to 10 socket connections
+    poolSize: 5, // Maintain up to 10 socket connections
     bufferMaxEntries: 0,
     bufferCommands: false,
     keepAlive: true,
@@ -47,7 +47,7 @@ mongoose.connect('mongodb://localhost/divergence', options)
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
 // turn debugging on
-mongoose.set('debug', true);
+mongoose.set('debug', false);
 //Get the default connection
 const mdb = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
@@ -86,12 +86,12 @@ module.exports = function db(data, model) {
             .catch((error) => reject(error))
         }
         if(model === 'getAllChannels') {
-            Channel.find(data, {pair, timeFrame}).lean()
+            Channel.find(data, {pair, timeFrame})
             .then(response => resolve(response))
             .catch((error) => reject(error))
         }
         if(model === 'getAllPrices') {
-            Price.find(data).sort({localTime: -1}).lean()
+            Price.find(data).sort({localTime: -1}).limit(34)
             .then(response => resolve(response))
             .catch((error) => reject(error))
         }

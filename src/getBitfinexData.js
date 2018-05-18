@@ -3,6 +3,7 @@ const moment = require('moment');
 const getChannel = require('./getChannel.js');
 const db = require('./db.js');
 const enhanceData = require('./enhanceData');
+const getDivergenceData = require('./getDivergenceData');
 
 module.exports = function getBitfinexData(subscriptions) {
     return new Promise((resolve, reject) => {
@@ -21,14 +22,16 @@ module.exports = function getBitfinexData(subscriptions) {
                     let data = msg[1]
                     db(msg[0], "getChannel")
                     .then((data)=>{
-                        return getChannel(data.key);
+                        if (data && data.key){
+                            return getChannel(data.key);
+                        } 
                     })
                     .then((channel)=>{
                         if(channel && data && data.length > 6) {
                             data.forEach((price, i) => {
                                 savePrice(channel.pair, channel.timeFrame, price);
                             })
-                        } else {
+                        } else if (channel){
                             savePrice(channel.pair, channel.timeFrame, data);
                         }
                     })
@@ -51,7 +54,12 @@ module.exports = function getBitfinexData(subscriptions) {
                     if (data && data.pair && data.timeFrame) {
                         const pair = data.pair;
                         const timeFrame = data.timeFrame;
-                        enhanceData(pair, timeFrame);
+                        enhanceData(pair, timeFrame)
+                        .then((data)=>{
+                            console.log("====================")
+                            console.log(data)
+                            //getDivergenceData()
+                        })
                     }
                 })
                 .catch((error)=>{

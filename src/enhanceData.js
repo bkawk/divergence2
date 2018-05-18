@@ -39,9 +39,7 @@ module.exports = function enhanceData(pair, timeFrame) {
                     const data = {id, priceSpike, rsiSpike};
                     db(data, "setSpikes")
                     .catch((error) => {
-                        console.log('===============================')
                         console.log(error)
-                        //reject(error)
                     })
                 })
             })
