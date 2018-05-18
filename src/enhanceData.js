@@ -44,7 +44,6 @@ module.exports = function enhanceData(pair, timeFrame) {
                 })
             })
             .catch((error) => {
-
                 console.log(error)
             })
         } catch (error) {
