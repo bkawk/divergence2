@@ -10,10 +10,10 @@ var channelSchema = new Schema({
     chanId: {type: Number, required: true, index: true}
 });
 var priceSchema = new Schema({
-    pair: {type: String, required: true, index: true}, 
+    pair: {type: String, required: true}, 
     time: {type: Number, required: true}, 
-    timeFrame: {type: String, required: true, index: true}, 
-    localTime: {type: String, required: true, index: true}, 
+    timeFrame: {type: String, required: true}, 
+    localTime: {type: String, required: true}, 
     open: {type: Number, required: true}, 
     close: {type: Number, required: true}, 
     high: {type: Number, required: true}, 
@@ -23,6 +23,8 @@ var priceSchema = new Schema({
     priceSpike: {type: String},
     rsiSpike: {type: String}
 });
+// compound indexes
+priceSchema.index({localTime:1,pair:1,timeFrame:1});
 // Create models 
 const Channel = mongoose.model('channel', channelSchema);
 const Price = mongoose.model('price', priceSchema);
@@ -32,7 +34,7 @@ const options = {
     autoIndex: true, // Don't build indexes
     reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
     reconnectInterval: 500, // Reconnect every 500ms
-    poolSize: 5, // Maintain up to 10 socket connections
+    poolSize: 7, // Maintain up to 10 socket connections
     bufferMaxEntries: 0,
     bufferCommands: false,
     keepAlive: true,
@@ -47,7 +49,7 @@ mongoose.connect('mongodb://localhost/divergence', options)
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
 // turn debugging on
-mongoose.set('debug', false);
+mongoose.set('debug', true);
 //Get the default connection
 const mdb = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
@@ -86,12 +88,12 @@ module.exports = function db(data, model) {
             .catch((error) => reject(error))
         }
         if(model === 'getAllChannels') {
-            Channel.find(data, {pair, timeFrame})
+            Channel.find(data, {pair, timeFrame}).lean()
             .then(response => resolve(response))
             .catch((error) => reject(error))
         }
         if(model === 'getAllPrices') {
-            Price.find(data).sort({localTime: -1}).limit(34)
+            Price.find(data).sort({localTime: -1}).lean()
             .then(response => resolve(response))
             .catch((error) => reject(error))
         }
