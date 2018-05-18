@@ -1,6 +1,7 @@
+const slope = require('./slope.js');
 module.exports = function divergence(columns) {
     return new Promise((resolve, reject) => {
-        columns.forEach((column, i) => {
+        columns.forEach((unused, i) => {
             if (
                 i > 2 &&
                 columns[1].priceSpike === 'down' &&
@@ -10,7 +11,7 @@ module.exports = function divergence(columns) {
                 columns[i].close > columns[1].close &&
                 columns[i].rsi < columns[1].rsi
             ) {
-                console.log(`Bullish Divergence, ${i-1} Period, ${columns[1].pair}, ${columns[1].timeFrame}`)
+                slope(columns, i, 'Bullish', 'Divergence')
             } else if (
                 i > 2 &&
                 columns[1].priceSpike === 'up' &&
@@ -20,7 +21,7 @@ module.exports = function divergence(columns) {
                 columns[i].close < columns[1].close &&
                 columns[i].rsi > columns[1].rsi
             ) {
-                console.log(`Bearish Divergence, ${i-1} Period, ${columns[1].pair}, ${columns[1].timeFrame}`)
+                slope(columns, i, 'Bearish', 'Divergence')
             } else if (
                 i > 2 &&
                 columns[1].priceSpike === 'down' &&
@@ -29,8 +30,8 @@ module.exports = function divergence(columns) {
                 columns[i].rsiSpike === 'down' &&
                 columns[i].close < columns[1].close &&
                 columns[i].rsi > columns[1].rsi
-            ){
-                console.log(`Positive Reversal, ${i-1} Period, ${columns[1].pair}, ${columns[1].timeFrame}`)
+            ) {
+                slope(columns, i, 'Positive', 'Reversal')
             } else if (
                 i > 2 &&
                 columns[1].priceSpike === 'up' &&
@@ -39,11 +40,9 @@ module.exports = function divergence(columns) {
                 columns[i].rsiSpike === 'up' &&
                 columns[i].close > columns[1].close &&
                 columns[i].rsi < columns[1].rsi
-            ){
-                console.log(`Negative Reversal, ${i-1} Period, ${columns[1].pair}, ${columns[1].timeFrame}`)
+            ) {
+                slope(columns, i, 'Negative', 'Reversal')
             }
         });
-        // _slope check the slopes of the rsi and price to ensure its a true divergence
-        // log divergence if its true
     })
 }

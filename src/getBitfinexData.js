@@ -2,8 +2,7 @@ const WebSocket = require('ws');
 const moment = require('moment');
 const getChannel = require('./getChannel.js');
 const db = require('./db.js');
-const enhanceData = require('./enhanceData');
-
+const enhanceData = require('./enhanceData.js');
 
 module.exports = function getBitfinexData(subscriptions) {
     return new Promise((resolve, reject) => {

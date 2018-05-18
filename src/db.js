@@ -3,6 +3,16 @@
 const mongoose = require('mongoose');
 // Define schemas
 var Schema = mongoose.Schema;
+var divergenceSchema = new Schema({
+    columns: {type: Array, required: true},
+    direction: {type: String, required: true},
+    type: {type: String, required: true},
+    period: {type: Number, required: true},
+    pair: {type: String, required: true},
+    timeFrame: {type: String, required: true},
+    localTime: {type: String, required: true},
+    time: {type: Number, required: true}, 
+});
 var channelSchema = new Schema({
     timeFrame: {type: String, required: true},
     pair: {type: String, required: true},
@@ -26,6 +36,7 @@ var priceSchema = new Schema({
 // compound indexes
 priceSchema.index({localTime:1,pair:1,timeFrame:1});
 // Create models 
+const Divergence = mongoose.model('divergence', divergenceSchema);
 const Channel = mongoose.model('channel', channelSchema);
 const Price = mongoose.model('price', priceSchema);
 
@@ -71,6 +82,11 @@ process.on('SIGINT', function() {
  */
 module.exports = function db(data, model) {
     return new Promise((resolve, reject) => {
+        if(model === 'setDivergence') {
+            Divergence.findOneAndUpdate({localTime: data.localTime, pair: data.pair, timeFrame: data.timeFrame}, {columns: data.columns, direction: data.direction, type: data.type, period: data.period, pair: data.pair, timeFrame: data.timeFrame, localTime: data.localTime, time: data.time},{upsert:true})
+            .then((response) => resolve(response))
+            .catch((error) => reject(error))
+        }
         if(model === 'setChannel') {
             Channel.findOneAndUpdate({key: data.key}, {chanId: data.chanId, timeFrame: data.timeFrame, pair: data.pair, key: data.key},{upsert:true})
             .then((response) => resolve(response))
