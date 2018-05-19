@@ -27,12 +27,13 @@
   },
   "dependencies": {
     "@solazu/technicalindicators": "^2.0.12",
+    "badgify": "^1.2.1",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^5.1.1",
     "moment": "^2.22.1",
     "mongoose": "^5.1.1",
-    "ws": "^5.1.1",
+    "promise-with-status": "^1.0.0",
     "sinon": "^5.0.1",
-    "mocha": "^5.1.1",
-    "chai-as-promised": "^7.1.1",
-    "badgify": "^1.2.1"
+    "ws": "^5.1.1"
   }
 }
