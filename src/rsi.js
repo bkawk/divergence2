@@ -1,11 +1,9 @@
 'use strict';
 const RSI = require('@solazu/technicalindicators').RSI;
 /**
- * get subscriptions
- * @param {number} timeFrames The value to the left of target
- * @param {number} pairs The tagets value
- * @param {number} apiUrl The value to the right of target
- * @return {string} the string indicating direction
+ * gets and sets the RSI values
+ * @param {Array} priceArray The array of prices to create the RSI from
+ * @return {string} two arrays for price and RSI
  */
 module.exports = function rsi(priceArray) {
     return new Promise((resolve, reject) => {
@@ -19,10 +17,10 @@ module.exports = function rsi(priceArray) {
             const inputRSI = {values, period: 14, reversedInput: true};
             const rsiArray = (RSI.calculate(inputRSI));
             if (values.length > 0 && rsiArray.length > 0) {
-                resolve({rsiArray, priceArray})
+                resolve({rsiArray, priceArray});
             }
-        } catch(error) {
-            reject(error)
+        } catch (error) {
+            reject(error);
         }
-    })
-}
+    });
+};

@@ -6,8 +6,8 @@ module.exports = function getChannel(key) {
             pair = item[2];
             obj = {pair, timeFrame};
             resolve(obj);
-        } catch(error) {
-            reject(error)
+        } catch (error) {
+            reject(error);
         }
-    })
-}
+    });
+};

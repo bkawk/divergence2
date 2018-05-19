@@ -3,53 +3,50 @@ const db = require('./db.js');
 const rsi = require('./rsi.js');
 const spike = require('./spike.js');
 /**
- * get subscriptions
- * @param {number} timeFrames The value to the left of target
- * @param {number} pairs The tagets value
- * @param {number} apiUrl The value to the right of target
- * @return {string} the string indicating direction
+ * Enhance the data with RSI and spikes
+ * @param {number} pair The instrument pair
+ * @param {number} timeFrame The time frame
+ * @return {string} somthing
  */
 module.exports = function enhanceData(pair, timeFrame) {
     return new Promise((resolve, reject) => {
         const data = {pair, timeFrame};
         db(data, 'getAllPrices')
-        .then(prices => {
-            return rsi(prices)
+        .then((prices) => {
+            return rsi(prices);
         })
-        .then(rsiData => {
+        .then((rsiData) => {
             const rsiArray = rsiData.rsiArray;
             const priceArray = rsiData.priceArray;
             rsiArray.forEach((item, i) => {
                 const id = priceArray[i]._id;
                 const rsi = rsiArray[i];
                 const data = {id, rsi};
-                db(data, "setRsi")
+                db(data, 'setRsi')
                 .catch((error) => {
-                    console.log(error)
-                })
-            })
-            return Promise.all([spike(priceArray, 'price'), spike(rsiArray, 'rsi')])
+                    console.log(error);
+                });
+            });
+            return Promise.all([spike(priceArray, 'price'), spike(rsiArray, 'rsi')]);
         })
-        .then(spikeData => { 
+        .then((spikeData) => {
             const priceArray = spikeData[0].dataArray;
-            const priceSpikeArray = spikeData[0].spikeArray;  
-            const rsiSpikeArray = spikeData[1].spikeArray;          
-            priceSpikeArray.forEach((item, i)=>{
+            const priceSpikeArray = spikeData[0].spikeArray;
+            const rsiSpikeArray = spikeData[1].spikeArray;
+            priceSpikeArray.forEach((item, i) => {
                 const id = priceArray[i]._id;
                 const priceSpike = priceSpikeArray[i];
                 const rsiSpike = rsiSpikeArray[i];
                 const data = {id, priceSpike, rsiSpike};
-                db(data, "setSpikes")
+                db(data, 'setSpikes')
                 .catch((error) => {
-                    console.log(error)
-                    reject(error)
-                })
-            })
-            resolve(true)
+                    reject(error);
+                });
+            });
+            resolve(true);
         })
         .catch((error) => {
-            console.log(error)
-            reject(error)
-        })
-    })
-}
+            reject(error);
+        });
+    });
+};

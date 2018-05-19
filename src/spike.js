@@ -1,9 +1,8 @@
 'use strict';
 /**
- * get subscriptions
- * @param {number} timeFrames The value to the left of target
- * @param {number} pairs The tagets value
- * @param {number} apiUrl The value to the right of target
+ * determines if the soike is up down or none
+ * @param {number} dataArray the array to evaluate
+ * @param {number} type indicates if the array is price or rsi
  * @return {string} the string indicating direction
  */
 module.exports = function spike(dataArray, type) {
@@ -30,7 +29,7 @@ module.exports = function spike(dataArray, type) {
                     }
                 }
                 if (type === 'rsi') {
-                    if(i === 0){
+                    if (i === 0) {
                         spikeArray.push('none');
                     } else if (i < (dataArray.length)) {
                         const right = dataArray[i-1];
@@ -43,12 +42,12 @@ module.exports = function spike(dataArray, type) {
                         } else {
                             spikeArray.push('none');
                         }
-                    } 
+                    }
                 }
             });
-            resolve({spikeArray, dataArray})
-        } catch(error) {
-            reject(error)
+            resolve({spikeArray, dataArray});
+        } catch (error) {
+            reject(error);
         }
-    })
-}
+    });
+};
