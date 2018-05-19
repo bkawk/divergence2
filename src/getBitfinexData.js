@@ -2,7 +2,7 @@ const WebSocket = require('ws');
 const moment = require('moment');
 const getChannel = require('./getChannel.js');
 const db = require('./db.js');
-const enhanceData = require('./enhanceData.js');
+
 
 module.exports = function getBitfinexData(subscriptions) {
     return new Promise((resolve, reject) => {
@@ -52,13 +52,6 @@ module.exports = function getBitfinexData(subscriptions) {
                 let localTime = moment(time).format();
                 let data = {pair, timeFrame, open, close, high, low, volume, localTime, time};
                 db(data, "setPrice")
-                .then((data)=>{
-                    if (data && data.pair && data.timeFrame) {
-                        const pair = data.pair;
-                        const timeFrame = data.timeFrame;
-                        enhanceData(pair, timeFrame)
-                    }
-                })
                 .catch((error)=>{
                     console.log(error)
                 })
