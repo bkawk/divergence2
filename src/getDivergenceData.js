@@ -1,7 +1,11 @@
 const db = require('./db.js');
 const divergence = require('./divergence.js');
 const enhanceData = require('./enhanceData.js');
-module.exports = function getDivergenceData(subscriptions) {
+const getSubscriptions = require('./getSubscriptions');
+
+module.exports = function getDivergenceData() {
+    getSubscriptions()
+    .then((subscriptions)=>{
         setInterval(function() {
             subscriptions.forEach((msg) => {
                 const key = msg.key;
@@ -27,4 +31,5 @@ module.exports = function getDivergenceData(subscriptions) {
                 });
             });
         }, 10000);
+    })
 };
