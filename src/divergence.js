@@ -11,7 +11,7 @@ module.exports = function divergence(columns) {
                 columns[i].close > columns[1].close &&
                 columns[i].rsi < columns[1].rsi
             ) {
-                slope(columns, i, 'Bullish', 'Divergence')
+                let a = await slope(columns, i, 'Bullish', 'Divergence');
             } else if (
                 i > 2 &&
                 columns[1].priceSpike === 'up' &&
@@ -44,5 +44,6 @@ module.exports = function divergence(columns) {
                 slope(columns, i, 'Negative', 'Reversal')
             }
         });
+        resolve();
     })
 }

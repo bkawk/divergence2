@@ -17,11 +17,10 @@ describe('Divergence tests', () => {
    
     it('Should return bullish divergence', () => {
         const columns = bullishDivergence;
-        let slopeSpy = sinon.spy(slope);        
-        divergence(columns).then(function() {
-            let slopeArguments = slopeSpy.getCall(0).args;
-            slopeArguments[2].should.be.eq('Bullish');
-            slopeArguments[3].should.be.eq('Divergence');
+        let stub = sinon.spy(slope);        
+        let promiseResult = divergence(columns).then(() => {
+            expect(stub.getCall(0).calledWithExactly([columns, 3, 'Bullish', 'Divergence'])).to.be.true;
+            done();
         });
     });
 
