@@ -49,6 +49,7 @@ const options = {
     bufferMaxEntries: 0,
     bufferCommands: false,
     keepAlive: true,
+    socketTimeoutMS: 300000,
 };
 //Set up default mongoose connection
 mongoose.connect('mongodb://localhost/divergence', options)

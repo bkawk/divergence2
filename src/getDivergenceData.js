@@ -15,7 +15,6 @@ module.exports = function getDivergenceData(subscriptions) {
                 })
                 .then((data)=>{
                     if (data.length >= 20 && data[0].rsi && data[0].priceSpike && data[0].rsiSpike){
-                        console.log('Starting B')
                         const divergenceData = data.splice(0,20);
                         divergence(divergenceData)
                         .catch((error)=>{
