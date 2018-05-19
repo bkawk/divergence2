@@ -44,5 +44,6 @@ module.exports = function divergence(columns) {
                 slope(columns, i, 'Negative', 'Reversal')
             }
         });
+        resolve();
     })
 }
