@@ -8,23 +8,21 @@
  */
 module.exports = function subscriptions() {
     return new Promise((resolve, reject) => {
-        try {
-        const timeFrames = ['15m', '30m', '1h', '1D', '7D'];
-        const pairs = ['EOSUSD', 'ZRXUSD', 'AIDUSD', 'AIOUSD', 'REPUSD', 'AVTUSD', 'BATUSD', 'BTCUSD', 'BCHUSD', 'BTGUSD', 'BFTUSD', 'CFIUSD', 'DAIUSD', 'DASHUSD', 'MNAUSD', 'ETPUSD', 'EDUUSD', 'ETHUSD', 'EDOUSD', 'ETCUSD', 'FUNUSD', 'GNTUSD', 'IOSUSD', 'IOTAUSD', 'LTCUSD', 'LRCUSD', 'MTNUSD', 'XMRUSD', 'NEOUSD', 'ODEUSD', 'OMGUSD', 'QASHUSD', 'QTUMUSD', 'RCNUSD', 'RDNUSD', 'RRTUSD', 'REQUSD', 'XRPUSD', 'SANUSD', 'SNGUSD', 'AGIUSD', 'SPKUSD', 'SNTUSD', 'DATAUSD', 'TRXUSD', 'TNBUSD', 'WAXUSD', 'YYWUSD', 'ZECUSD', 'ELFUSD', 'RLCUSD'];
-        // const timeFrames = ['1h'];
-        // const pairs = ['EOSUSD'];
-            let subscriptions = [];
-            timeFrames.forEach((timeFrames) => {
-                pairs.forEach((pairs) => {
-                    const event = 'subscribe';
-                    const channel = 'candles';
-                    const key = `trade:${timeFrames}:t${pairs}`;
-                    subscriptions.push({event, channel, key});
-                });
+    const timeFrames = ['15m', '30m', '1h', '1D', '7D'];
+    const pairs = ['EOSUSD', 'ZRXUSD', 'AIDUSD', 'AIOUSD', 'REPUSD', 'AVTUSD', 'BATUSD', 'BTCUSD', 'BCHUSD', 'BTGUSD', 'BFTUSD', 'CFIUSD', 'DAIUSD', 'DASHUSD', 'MNAUSD', 'ETPUSD', 'EDUUSD', 'ETHUSD', 'EDOUSD', 'ETCUSD', 'FUNUSD', 'GNTUSD', 'IOSUSD', 'IOTAUSD', 'LTCUSD', 'LRCUSD', 'MTNUSD', 'XMRUSD', 'NEOUSD', 'ODEUSD', 'OMGUSD', 'QASHUSD', 'QTUMUSD', 'RCNUSD', 'RDNUSD', 'RRTUSD', 'REQUSD', 'XRPUSD', 'SANUSD', 'SNGUSD', 'AGIUSD', 'SPKUSD', 'SNTUSD', 'DATAUSD', 'TRXUSD', 'TNBUSD', 'WAXUSD', 'YYWUSD', 'ZECUSD', 'ELFUSD', 'RLCUSD'];
+        let subscriptions = [];
+        timeFrames.forEach((timeFrames) => {
+            pairs.forEach((pairs) => {
+                const event = 'subscribe';
+                const channel = 'candles';
+                const key = `trade:${timeFrames}:t${pairs}`;
+                subscriptions.push({event, channel, key});
             });
+        });
+        if (subscriptions.length > 0){
             resolve(subscriptions);
-        } catch (error) {
-            reject(error);
+        } else {
+            reject('No subscriptions')
         }
     });
 };

@@ -8,20 +8,16 @@ const moment = require('moment');
  * @return {string} two arrays for price and RSI
  */
 module.exports = function savePrice(pair, timeFrame, price) {
-    try {
-        let time = price[0];
-        let open = price[1];
-        let close = price[2];
-        let high = price[3];
-        let low = price[4];
-        let volume = price[5];
-        let localTime = moment(time).format();
-        let data = {pair, timeFrame, open, close, high, low, volume, localTime, time};
-        db(data, 'setPrice')
-        .catch((error)=>{
-            console.log(error);
-        });
-    } catch (error) {
+    let time = price[0];
+    let open = price[1];
+    let close = price[2];
+    let high = price[3];
+    let low = price[4];
+    let volume = price[5];
+    let localTime = moment(time).format();
+    let data = {pair, timeFrame, open, close, high, low, volume, localTime, time};
+    db(data, 'setPrice')
+    .catch((error)=>{
         console.log(error);
-    }
+    });
 };

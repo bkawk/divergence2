@@ -4,7 +4,7 @@
 
 ### Prerequisites
 
-First, install [npm](https://www.npmjs.com) (we assume you have pre-installed [node.js](https://nodejs.org)).
+First, install [npm](https://www.npmjs.com) (we assume you have pre-installed [node.js](https://nodejs.org)). Then install and run [mongodb](https://www.mongodb.com/)
 
 ### Setup
 
@@ -19,7 +19,5 @@ Start the app
 Test the app
 
     npm test
-    npm run-script test-serv
-    npm run-script test-func
-    npm run-script test-task
+
 
