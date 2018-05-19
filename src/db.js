@@ -21,7 +21,7 @@ var channelSchema = new Schema({
 });
 var priceSchema = new Schema({
     pair: {type: String, required: true}, 
-    time: {type: Number, required: true}, 
+    time: {type: Date, required: true}, 
     timeFrame: {type: String, required: true}, 
     localTime: {type: String, required: true}, 
     open: {type: Number, required: true}, 
@@ -34,7 +34,7 @@ var priceSchema = new Schema({
     rsiSpike: {type: String}
 });
 // compound indexes
-priceSchema.index({localTime:1,pair:1,timeFrame:1});
+priceSchema.index({time:1,pair:1,timeFrame:1});
 // Create models 
 const Divergence = mongoose.model('divergence', divergenceSchema);
 const Channel = mongoose.model('channel', channelSchema);
@@ -59,7 +59,7 @@ mongoose.connect('mongodb://localhost/divergence', options)
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
 // turn debugging on
-mongoose.set('debug', false);
+mongoose.set('debug', true);
 //Get the default connection
 const mdb = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
@@ -108,7 +108,7 @@ module.exports = function db(data, model) {
             .catch((error) => reject(error))
         }
         if(model === 'getAllPrices') {
-            Price.find(data).sort({localTime: -1}).limit(34).lean()
+            Price.find(data).sort({time: -1}).limit(100).lean()
             .then(response => resolve(response))
             .catch((error) => reject(error))
         }

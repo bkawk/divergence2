@@ -15,8 +15,8 @@ module.exports = function getBitfinexData(subscriptions) {
                 const chanId = msg.chanId;
                 const data = {timeFrame, pair, key, chanId}
                 db(data, "setChannel")
-                .catch((error)=>{
-                    reject(error)
+                .catch((error) => {
+                    console.log(error)
                 })
             }
             function price (msg) {

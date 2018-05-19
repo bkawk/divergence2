@@ -25,6 +25,9 @@ module.exports = function enhanceData(pair, timeFrame) {
                     const rsi = rsiArray[i];
                     const data = {id, rsi};
                     db(data, "setRsi")
+                    .catch((error) => {
+                        console.log(error)
+                    })
                 })
                 return Promise.all([spike(priceArray, 'price'), spike(rsiArray, 'rsi')])
             })
