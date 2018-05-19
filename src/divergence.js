@@ -11,7 +11,7 @@ module.exports = function divergence(columns) {
                 columns[i].close > columns[1].close &&
                 columns[i].rsi < columns[1].rsi
             ) {
-                //slope(columns, i, 'Bullish', 'Divergence')
+                slope(columns, i, 'Bullish', 'Divergence')
             } else if (
                 i > 2 &&
                 columns[1].priceSpike === 'up' &&
@@ -21,7 +21,7 @@ module.exports = function divergence(columns) {
                 columns[i].close < columns[1].close &&
                 columns[i].rsi > columns[1].rsi
             ) {
-                //slope(columns, i, 'Bearish', 'Divergence')
+                slope(columns, i, 'Bearish', 'Divergence')
             } else if (
                 i > 2 &&
                 columns[1].priceSpike === 'down' &&
@@ -31,7 +31,7 @@ module.exports = function divergence(columns) {
                 columns[i].close < columns[1].close &&
                 columns[i].rsi > columns[1].rsi
             ) {
-                //slope(columns, i, 'Positive', 'Reversal')
+                slope(columns, i, 'Positive', 'Reversal')
             } else if (
                 i > 2 &&
                 columns[1].priceSpike === 'up' &&
@@ -41,7 +41,7 @@ module.exports = function divergence(columns) {
                 columns[i].close > columns[1].close &&
                 columns[i].rsi < columns[1].rsi
             ) {
-                //slope(columns, i, 'Negative', 'Reversal')
+                slope(columns, i, 'Negative', 'Reversal')
             }
         });
     })

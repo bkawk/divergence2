@@ -23,9 +23,11 @@ module.exports = function slope(columns, period, direction, type) {
                 if (i > 1 && i < period) {
                     let priceLine = ((i-1) * priceSlope) + priceY1;
                     let rsiLine = ((i-1) * rsiSlope) + rsiY1;
-                    if (column.close > priceLine || column.rsi > rsiLine) {
+                    if (direction == 'Bullish' || direction == 'Negative' && (column.close > priceLine || column.rsi > rsiLine)) {
                         result = false
-                    } 
+                    } else if  (direction == 'Bearish' || direction == 'Positive' && (column.close < priceLine || column.rsi < rsiLine)){
+                        result = false
+                    }
                 }
             });
             if (result = true){
@@ -36,11 +38,8 @@ module.exports = function slope(columns, period, direction, type) {
                 console.log(`Confirmed ${direction} ${type}, ${period} Period, ${columns[1].pair}, ${columns[1].timeFrame}. localTime: ${columns[1].localTime} time: ${columns[1].time}`)
                 const data = {columns, direction, type, period, pair, timeFrame, localTime, time}
                 db(data, 'setDivergence')
-                .then((data)=>{
-                    console.log(data)
-                })
                 .catch((error)=>{
-                    reject(error)
+                    console.log(error)
                 })
             }
         } catch(error) {

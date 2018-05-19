@@ -59,7 +59,7 @@ mongoose.connect('mongodb://localhost/divergence', options)
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
 // turn debugging on
-mongoose.set('debug', true);
+mongoose.set('debug', false);
 //Get the default connection
 const mdb = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
