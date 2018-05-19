@@ -1,31 +1,21 @@
 
-const chai = require('chai'),
-    should = chai.should,
-    expect = chai.expect,
-    assert = chai.assert,
-    deep = chai.deep;
-
+const chai = require('chai');
+const expect = chai.expect;
 const chaiAsPromised = require('chai-as-promised');
-// calling should bef, solved chaiaspromised bug
+// call needed to resolve chai bug
 chai.should();
 chai.use(chaiAsPromised);
-const subscriptions = require('../src/subscriptions');
-const bitfinex = require('../src/bitfinexData.js').default;
+const getBitfinexData = require('../src/getBitfinexData.js');
+const withStatus = require('promise-with-status')(Promise);
 
-describe('Bitfinex tests', function () {
-    const timeFrames = ['1h', '2h'];
-    const pairs = ['EOSUSD', 'ZRXUSD'];
-    const apiUrl = 'Dummy';
-    //let bitfinexService = bitfinex(timeFrames, pairs, apiUrl);    
-    it('subscriptions should return resolved promise', function() {
-        return assert.isFulfilled(subscriptions(), 'resolved');
-    });
-    it('subscriptions Should return matrix of timeFrame and Pair', function () {
-        var expectedResults = [
+describe('get Bitfinex Data tests', function() {
+    it('Should return pending promise', function() {
+        const subscriptions = [
             {channel: 'candles', event: 'subscribe', key: 'trade:1h:tEOSUSD'},
             {channel: 'candles', event: 'subscribe', key: 'trade:1h:tZRXUSD'},
             {channel: 'candles', event: 'subscribe', key: 'trade:2h:tEOSUSD'},
-            {channel: 'candles', event: 'subscribe', key: 'trade:2h:tZRXUSD'}];            
-        return subscriptions().should.eventually.deep.equal(expectedResults);
+            {channel: 'candles', event: 'subscribe', key: 'trade:2h:tZRXUSD'}];
+        let promise = withStatus(getBitfinexData(subscriptions));
+        expect(promise.status.toString().trim()).to.be.eq('Symbol(pending)');
     });
 });

@@ -1,68 +1,18 @@
-const divergence = require('../src/functions/divergence');
-const noDivergence = require('./data/noDivergence.js');
-const bullishDivergence = require('./data/bullishDivergence.js');
-const bearishDivergence = require('./data/bearishDivergence.js');
-const confirmedBullishDivergence = require('./data/confirmedBullishDivergence.js');
-const confirmedBearishDivergence = require('./data/confirmedBearishDivergence.js');
-
+const getDivergenceData = require('../src/getDivergenceData');
 const chaiAsPromised = require('chai-as-promised');
 const chai = require('chai'), should = chai.should, expect = chai.expect, assert = chai.assert;
+chai.should();
 chai.use(chaiAsPromised);
+const withStatus = require('promise-with-status')(Promise);
 
-describe('Divergence tests', () => {
-
-    it('Should return no divergence', () => {
-        const columns = noDivergence;
-        const pos = 2
-        const timeFrame = "1h";
-        const pair = "tEOSUSD";
-        return divergence(columns, pos, timeFrame, pair)
-            .then(function (data) {
-                expect(data.direction).to.equal('none');
-            })
-    });
-
-    it('Should return bullish divergence', () => {
-        const columns = bullishDivergence;
-        const pos = 2;
-        const timeFrame = "1h";
-        const pair = "tEOSUSD";
-        return divergence(columns, pos, timeFrame, pair)
-            .then(function (data) {
-                expect(data.direction).to.equal('bullish');
-            })
-    });
-
-    it('Should return bearish divergence', () => {
-        const columns = bearishDivergence;
-        const pos = 2;
-        const timeFrame = "1h";
-        const pair = "tEOSUSD";
-        return divergence(columns, pos, timeFrame, pair)
-            .then(function (data) {
-                expect(data.direction).to.equal('bearish');
-            })
-    });
-
-    it('Should return confirmed bullish divergence', () => {
-        const columns = confirmedBullishDivergence;
-        const pos = 6;
-        const timeFrame = "1h";
-        const pair = "tEOSUSD";
-        return divergence(columns, pos, timeFrame, pair)
-            .then(function (data) {
-                expect(data.direction).to.equal('bullish');
-            })
-    });
-
-    it('Should return confirmed bearish divergence', () => {
-        const columns = confirmedBearishDivergence;
-        const pos = 6;
-        const timeFrame = "1h";
-        const pair = "tEOSUSD";
-        return divergence(columns, pos, timeFrame, pair)
-            .then(function (data) {
-                expect(data.direction).to.equal('bearish');
-            })
+describe('get Divergence Data tests', () => {
+    it("Should return pending promise",function(){
+        const subscriptions = [
+            {channel: 'candles', event: 'subscribe', key: 'trade:1h:tEOSUSD'},
+            {channel: 'candles', event: 'subscribe', key: 'trade:1h:tZRXUSD'},
+            {channel: 'candles', event: 'subscribe', key: 'trade:2h:tEOSUSD'},
+            {channel: 'candles', event: 'subscribe', key: 'trade:2h:tZRXUSD'}];
+        let promise = withStatus(getDivergenceData(subscriptions));
+        expect(promise.status.toString().trim()).to.be.eq('Symbol(pending)');
     });
 });
