@@ -10,7 +10,7 @@ module.exports = function getBitfinexData() {
         const bitfinex = new WebSocket('wss://api.bitfinex.com/ws/2');
         bitfinex.on('message', (msg) => {
             const message = JSON.parse(msg);
-            if (message.event === 'subscribed') { 
+            if (message.event === 'subscribed') {
                 subscribed(message);
             } else if (message && message[1] != 'hb' && typeof message[0] != undefined && message[0] != null) {
                 price(message);

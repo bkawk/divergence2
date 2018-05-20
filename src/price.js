@@ -5,7 +5,6 @@ const savePrice = require('./savePrice.js');
 /**
  * gets and sets the RSI values
  * @param {Array} message The array of prices to create the RSI from
- * @return {string} two arrays for price and RSI
  */
 module.exports = function price(message) {
     const data = message[1];
