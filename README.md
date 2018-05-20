@@ -18,7 +18,7 @@ Install dependencies
     npm install
 
 Start the app
-- set MongoDBPath: mongod --setdbpath=[FolderPath]
+- set MongoDBPath: mongod --dbpath=[FolderPath]
 
 - npm run now
 
