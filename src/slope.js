@@ -11,37 +11,36 @@ const db = require('./db.js');
 module.exports = function slope(columns, period, direction, type) {
     return new Promise((resolve, reject) => {
         try {
-            console.log(`Testing:  ${direction} ${type}, ${period} Period, ${columns[1].pair}, ${columns[1].timeFrame}. localTime: ${columns[1].localTime} time: ${columns[1].time}`);
             const priceY1 = columns[1].close;
             const priceY2 = columns[period].close;
             const rsiY1 = columns[1].rsi;
             const rsiY2 = columns[period].rsi;
-            const priceSlope = (priceY2- priceY1) / period;
-            const rsiSlope = (rsiY2 - rsiY1) / period;
+            const priceSlope = (priceY1 - priceY2) / period;
+            const rsiSlope = (rsiY1 - rsiY2) / period;
             let result = true;
             columns.forEach((column, i) => {
                 if (i > 1 && i < period) {
-                    let priceLine = ((i-1) * priceSlope) + priceY1;
-                    let rsiLine = ((i-1) * rsiSlope) + rsiY1;
-                    if (direction == 'Bullish' || direction == 'Negative' && (column.close > priceLine || column.rsi > rsiLine)) {
+                    let priceLine = ((i) * priceSlope) + priceY1;
+                    let rsiLine = ((i) * rsiSlope) + rsiY1;
+                    if ((direction == 'Bullish' || direction == 'Negative') && (column.close > priceLine || column.rsi > rsiLine)) {
                         result = false;
-                    } else if (direction == 'Bearish' || direction == 'Positive' && (column.close < priceLine || column.rsi < rsiLine)) {
+                    } else if ((direction == 'Bearish' || direction == 'Positive') && (column.close < priceLine || column.rsi < rsiLine)) {
                         result = false;
                     }
                 }
             });
-            if (result = true) {
+            if (result === true) {
                 const pair = columns[1].pair;
                 const timeFrame = columns[1].timeFrame;
                 const localTime = columns[1].localTime;
                 const time = columns[1].time;
-                console.log(`Confirmed ${direction} ${type}, ${period} Period, ${columns[1].pair}, ${columns[1].timeFrame}. localTime: ${columns[1].localTime} time: ${columns[1].time}`);
+                console.log(`Confirmed ${direction} ${type}, ${period-1} Period, ${columns[1].pair}, ${columns[1].timeFrame}. localTime: ${columns[1].localTime} time: ${columns[1].time}`);
                 const data = {columns, direction, type, period, pair, timeFrame, localTime, time};
                 db(data, 'setDivergence')
                 .catch((error)=>{
                     console.log(error);
                 });
-            }
+            } 
         } catch (error) {
             reject(error);
         }

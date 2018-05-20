@@ -8,25 +8,23 @@ const savePrice = require('./savePrice.js');
  * @return {string} two arrays for price and RSI
  */
 module.exports = function price(message) {
-    if (message && typeof message[0] != undefined && message[0] != null) {
-        const data = message[1];
-        db(message[0], 'getChannel')
-        .then((data)=>{
-            if (data && data.key) {
-                return getChannel(data.key);
-            }
-        })
-        .then((channel) => {
-            if (channel && data && data.length > 6) {
-                data.forEach((price, i) => {
-                    savePrice(channel.pair, channel.timeFrame, price);
-                });
-            } else if (channel) {
-                savePrice(channel.pair, channel.timeFrame, data);
-            }
-        })
-        .catch((error)=>{
-            console.log(error);
-        });
-    }
+    const data = message[1];
+    db(message[0], 'getChannel')
+    .then((data)=>{
+        if (data && data.key) {
+            return getChannel(data.key);
+        }
+    })
+    .then((channel) => {
+        if (channel && data && data.length > 6) {
+            data.forEach((price, i) => {
+                savePrice(channel.pair, channel.timeFrame, price);
+            });
+        } else if (channel) {
+            savePrice(channel.pair, channel.timeFrame, data);
+        }
+    })
+    .catch((error)=>{
+        console.log(error);
+    });
 };
