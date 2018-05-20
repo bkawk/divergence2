@@ -18,7 +18,6 @@ module.exports = function slope(columns, period, direction, type) {
             const rsiY2 = columns[period].rsi;
             const priceSlope = (priceY2- priceY1) / period;
             const rsiSlope = (rsiY2 - rsiY1) / period;
-            let result = true;
             columns.forEach((column, i) => {
                 if (i > 1 && i < period) {
                     let priceLine = ((i-1) * priceSlope) + priceY1;
