@@ -8,13 +8,19 @@ First, install [npm](https://www.npmjs.com) (we assume you have pre-installed [n
 
 ### Setup
 
+Install on-premise mongoDB 
+- download MongoDB
+- add bin folder to your path
+
+ 
 Install dependencies
 
     npm install
 
 Start the app
+- set MongoDBPath: mongod --setdbpath=[FolderPath]
 
-    npm run now
+- npm run now
 
 Test the app
 
