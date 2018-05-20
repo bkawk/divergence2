@@ -1,11 +1,12 @@
 'use strict';
 const db = require('./db.js');
-const getChannel = require('./getChannel.js');
 const moment = require('moment');
 /**
  * gets and sets the RSI values
- * @param {Array} msg The array of prices to create the RSI from
- * @return {string} two arrays for price and RSI
+ * @param {Array} pair the pair currency
+ * @param {string} timeFrame the time frame e.g: 1h
+ * @param {double} price price
+ //* @return {string} two arrays for price and RSI
  */
 module.exports = function savePrice(pair, timeFrame, price) {
     let time = price[0];

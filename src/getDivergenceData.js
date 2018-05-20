@@ -31,5 +31,5 @@ module.exports = function getDivergenceData() {
                 });
             });
         }, 10000);
-    })
+    });
 };

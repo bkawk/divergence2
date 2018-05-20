@@ -19,10 +19,10 @@ module.exports = function subscriptions() {
                 subscriptions.push({event, channel, key});
             });
         });
-        if (subscriptions.length > 0){
+        if (subscriptions.length > 0) {
             resolve(subscriptions);
         } else {
-            reject('No subscriptions')
+            reject('No subscriptions');
         }
     });
 };
