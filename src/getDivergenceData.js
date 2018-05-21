@@ -2,7 +2,10 @@ const db = require('./db.js');
 const divergence = require('./divergence.js');
 const enhanceData = require('./enhanceData.js');
 const getSubscriptions = require('./getSubscriptions');
-
+const memwatch = require('memwatch-next');
+const util = require('util');
+// Take first snapshot
+let hd = new memwatch.HeapDiff();
 module.exports = function getDivergenceData() {
     getSubscriptions()
     .then((subscriptions)=>{
@@ -30,6 +33,9 @@ module.exports = function getDivergenceData() {
                     console.log(error);
                 });
             });
+             // Take the second snapshot and compute the diff
+        let diff = hd.end();
+        console.log(util.inspect(diff, {showHidden: false, depth: 4}));
         }, 10000);
     });
 };

@@ -11,11 +11,11 @@ First, install [npm](https://www.npmjs.com) (we assume you have pre-installed [n
 Install on-premise mongoDB 
 - download MongoDB
 - add bin folder to your path
-
  
 Install dependencies
 
-    npm install
+- npm install
+- npm install --global --production windows-build-tools
 
 Start the app
 - set MongoDBPath: mongod --dbpath=[FolderPath]
