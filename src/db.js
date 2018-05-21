@@ -44,6 +44,7 @@ const options = {
     bufferCommands: false,
     keepAlive: true,
     socketTimeoutMS: 300000,
+    useFindAndModify: false,
 };
 mongoose.connect('mongodb://localhost/divergence', options)
 .then(() => {
@@ -58,7 +59,8 @@ mongoose.set('debug', false);
 const mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
 process.on('SIGINT', () => {
-    mdb.close(() => {
+    // close all connections
+    mongoose.disconnect().then(()=>{
         console.log('Mongoose default connection disconnected through app termination');
         process.exit(0);
     });
