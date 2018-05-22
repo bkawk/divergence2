@@ -39,21 +39,26 @@ const options = {
     autoIndex: true,
     reconnectTries: Number.MAX_VALUE,
     reconnectInterval: 500,
-    poolSize: 7,
+    poolSize: 8,
     bufferMaxEntries: 0,
     bufferCommands: false,
     keepAlive: true,
-    socketTimeoutMS: 300000,
-    useFindAndModify: false,
+    socketTimeoutMS: 600000,
+    connectTimeoutMS: 600000,
 };
-mongoose.connect('mongodb://localhost/divergence', options)
-.then(() => {
+
+if (!mongoose.connection.readyState) {
+    mongoose.connect('mongodb://localhost/divergence', options)
+    .then(() => {
         console.log('Mongo Connected');
     },
     (err) => {
         console.log('Mongo Connection Error');
     }
 );
+}
+
+
 mongoose.Promise = global.Promise;
 mongoose.set('debug', false);
 const mdb = mongoose.connection;
@@ -75,42 +80,64 @@ module.exports = function db(data, model) {
     return new Promise((resolve, reject) => {
         if (model === 'setDivergence') {
             Divergence.findOneAndUpdate({localTime: data.localTime, pair: data.pair, timeFrame: data.timeFrame}, {columns: data.columns, direction: data.direction, type: data.type, period: data.period, pair: data.pair, timeFrame: data.timeFrame, localTime: data.localTime, time: data.time}, {upsert: true})
-            .then((response) => resolve(response))
+            .then((response) => {
+                mdb.close();
+                resolve(response);
+            })
             .catch((error) => reject(error));
         }
         if (model === 'setChannel') {
             Channel.findOneAndUpdate({key: data.key}, {chanId: data.chanId, timeFrame: data.timeFrame, pair: data.pair, key: data.key}, {upsert: true})
-            .then((response) => resolve(response))
+            .then((response) => {
+                resolve(response);
+            })
             .catch((error) => reject(error));
         }
         if (model === 'setPrice') {
             Price.findOneAndUpdate({localTime: data.localTime, pair: data.pair, timeFrame: data.timeFrame}, {time: data.time, pair: data.pair, timeFrame: data.timeFrame, localTime: data.localTime, open: data.open, close: data.close, high: data.high, low: data.low, volume: data.volume}, {upsert: true})
-            .then((response) => resolve(response))
+            .then((response) => {
+                // console.log('Price Set' + new Date().toLocaleString());
+                resolve(response);
+            })
             .catch((error) => reject(error));
         }
         if (model === 'getChannel') {
             Channel.findOne({chanId: data})
-            .then((response) => resolve(response))
+            .then((response) => {
+                resolve(response);
+            })
             .catch((error) => reject(error));
         }
         if (model === 'getAllChannels') {
             Channel.find(data, {pair, timeFrame}).lean()
-            .then((response) => resolve(response))
+            .then((response) => {
+                mdb.close();
+                resolve(response);
+            })
             .catch((error) => reject(error));
         }
         if (model === 'getAllPrices') {
             Price.find(data).sort({time: -1}).limit(100).lean()
-            .then((response) => resolve(response))
+            .then((response) => {
+                mdb.close();
+                resolve(response);
+            })
             .catch((error) => reject(error));
         }
         if (model === 'setRsi') {
             Price.findOneAndUpdate({_id: data.id}, {rsi: data.rsi})
-            .then((response) => resolve(response))
+            .then((response) => {
+                mdb.close();
+                resolve(response);
+            })
             .catch((error) => reject(error));
         }
         if (model === 'setSpikes') {
             Price.findOneAndUpdate({_id: data.id}, {priceSpike: data.priceSpike, rsiSpike: data.rsiSpike})
-            .then((response) => resolve(response))
+            .then((response) => {
+                mdb.close();
+                resolve(response);
+            })
             .catch((error) => reject(error));
         }
     });
