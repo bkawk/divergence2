@@ -1,3 +1,4 @@
+// @ts-check
 'use strict';
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -31,6 +32,7 @@ const priceSchema = new Schema({
     priceSpike: {type: String},
     rsiSpike: {type: String},
 });
+
 priceSchema.index({time: 1, pair: 1, timeFrame: 1});
 const Divergence = mongoose.model('divergence', divergenceSchema);
 const Channel = mongoose.model('channel', channelSchema);
@@ -39,7 +41,7 @@ const options = {
     autoIndex: true,
     reconnectTries: Number.MAX_VALUE,
     reconnectInterval: 500,
-    poolSize: 8,
+    poolSize: 9,
     bufferMaxEntries: 0,
     bufferCommands: false,
     keepAlive: true,
@@ -58,13 +60,11 @@ if (!mongoose.connection.readyState) {
 );
 }
 
-
 mongoose.Promise = global.Promise;
 mongoose.set('debug', false);
 const mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
 process.on('SIGINT', () => {
-    // close all connections
     mongoose.disconnect().then(()=>{
         console.log('Mongoose default connection disconnected through app termination');
         process.exit(0);
@@ -78,10 +78,23 @@ process.on('SIGINT', () => {
  */
 module.exports = function db(data, model) {
     return new Promise((resolve, reject) => {
+        if (model === 'setEnhance') {
+            Price.insertMany(data)
+            .then((response) => {
+                resolve(response);
+            })
+            .catch((error) => reject(error));
+        }
+        if (model === 'batchPrice') {
+            Price.insertMany(data)
+            .then((response) => {
+                resolve(response);
+            })
+            .catch((error) => reject(error));
+        }
         if (model === 'setDivergence') {
             Divergence.findOneAndUpdate({localTime: data.localTime, pair: data.pair, timeFrame: data.timeFrame}, {columns: data.columns, direction: data.direction, type: data.type, period: data.period, pair: data.pair, timeFrame: data.timeFrame, localTime: data.localTime, time: data.time}, {upsert: true})
             .then((response) => {
-                mdb.close();
                 resolve(response);
             })
             .catch((error) => reject(error));
@@ -96,7 +109,6 @@ module.exports = function db(data, model) {
         if (model === 'setPrice') {
             Price.findOneAndUpdate({localTime: data.localTime, pair: data.pair, timeFrame: data.timeFrame}, {time: data.time, pair: data.pair, timeFrame: data.timeFrame, localTime: data.localTime, open: data.open, close: data.close, high: data.high, low: data.low, volume: data.volume}, {upsert: true})
             .then((response) => {
-                // console.log('Price Set' + new Date().toLocaleString());
                 resolve(response);
             })
             .catch((error) => reject(error));
@@ -111,7 +123,6 @@ module.exports = function db(data, model) {
         if (model === 'getAllChannels') {
             Channel.find(data, {pair, timeFrame}).lean()
             .then((response) => {
-                mdb.close();
                 resolve(response);
             })
             .catch((error) => reject(error));
@@ -119,23 +130,6 @@ module.exports = function db(data, model) {
         if (model === 'getAllPrices') {
             Price.find(data).sort({time: -1}).limit(100).lean()
             .then((response) => {
-                mdb.close();
-                resolve(response);
-            })
-            .catch((error) => reject(error));
-        }
-        if (model === 'setRsi') {
-            Price.findOneAndUpdate({_id: data.id}, {rsi: data.rsi})
-            .then((response) => {
-                mdb.close();
-                resolve(response);
-            })
-            .catch((error) => reject(error));
-        }
-        if (model === 'setSpikes') {
-            Price.findOneAndUpdate({_id: data.id}, {priceSpike: data.priceSpike, rsiSpike: data.rsiSpike})
-            .then((response) => {
-                mdb.close();
                 resolve(response);
             })
             .catch((error) => reject(error));

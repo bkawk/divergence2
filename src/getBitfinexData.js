@@ -1,3 +1,4 @@
+// @ts-check
 'use strict';
 const getSubscriptions = require('./getSubscriptions.js');
 const WebSocket = require('ws');
@@ -7,73 +8,68 @@ const LeakyBucket = require('leaky-bucket');
 
 module.exports = function getBitfinexData() {
     const subscriptions = getSubscriptions();
+    const socketPerConnection = 50;
+    const subscriptionGroups = Math.ceil(subscriptions.length / socketPerConnection);
+    const capacity = 1;
+    const interval = 20;
+    const maxWaitingTime = subscriptions.length * interval;
     let bucket = [];
     let bitfinex = [];
-    for (let i = 0; i <= 8; ++i) {
-        bucket[i] = new LeakyBucket({
-            capacity: 1, // Make 1 request
-            interval: 20, // Every 10 seconds
-            maxWaitingTime: 2040, // > Number of items to process * interval
-        });
+
+       /**
+     * get subscriptions
+     * @param {number} i The value to the left of target
+     * @param {number} x The tagets value
+     * @return {boolean} the string indicating direction
+     */
+    function socketJob(i, x) {
+        return ((i === 0 && x <= 50) ||
+            (i === 1 && x > 50 && x <= 100) ||
+            (i === 2 && x > 100 && x <= 150) ||
+            (i === 3 && x > 150 && x <= 200) ||
+            (i === 4 && x > 200 && x <= 250) ||
+            (i === 5 && x > 250 && x <= 300) ||
+            (i === 6 && x > 300 && x <= 350) ||
+            (i === 7 && x > 350 && x <= 450)
+        );
     }
-    for (let i = 0; i <= 8; ++i) {
+
+    for (let i = 0; i <= subscriptionGroups; ++i) {
+        bucket[i] = new LeakyBucket({capacity, interval, maxWaitingTime});
         bitfinex[i] = new WebSocket('wss://api.bitfinex.com/ws/2');
-    }
-    for (let i = 0; i <= 8; ++i) {
         bitfinex[i].on('message', (msg) => {
             const message = JSON.parse(msg);
             if (message.event === 'subscribed') {
                 subscribed(message);
             } else if (message && message[1] != 'hb' && typeof message[0] != undefined && message[0] != null) {
-                price(message);
+                price(message, i);
+            } else if (message.event === 'info') {
+                if (message.code == 20051 || message.code == 20061 ) {
+                    // getBitfinexData();
+                }
             }
         });
         bitfinex[i].on('open', () => {
             for (let x = 0; x < subscriptions.length; x++) {
-                if (i === 0 && x <= 50) {
-                    bucket[i].throttle((err) => {
-                        bitfinex[i].send(JSON.stringify(subscriptions[x]));
-                    });
-                }
-                if (i === 1 && x > 50 && x <= 100) {
-                    bucket[i].throttle((err) => {
-                        bitfinex[i].send(JSON.stringify(subscriptions[x]));
-                    });
-                }
-                if (i === 2 && x > 100 && x <= 150) {
-                    bucket[i].throttle((err) => {
-                        bitfinex[i].send(JSON.stringify(subscriptions[x]));
-                    });
-                }
-                if (i === 3 && x > 150 && x <= 200) {
-                    bucket[i].throttle((err) => {
-                        bitfinex[i].send(JSON.stringify(subscriptions[x]));
-                    });
-                }
-                if (i === 4 && x > 200 && x <= 250) {
-                    bucket[i].throttle((err) => {
-                        bitfinex[i].send(JSON.stringify(subscriptions[x]));
-                    });
-                }
-                if (i === 5 && x > 250 && x <= 300) {
-                    bucket[i].throttle((err) => {
-                        bitfinex[i].send(JSON.stringify(subscriptions[x]));
-                    });
-                }
-                if (i === 6 && x > 300 && x <= 350) {
-                    bucket[i].throttle((err) => {
-                        bitfinex[i].send(JSON.stringify(subscriptions[x]));
-                    });
-                }
-                if (i === 7 && x > 350 && x <= 408) {
-                    bucket[i].throttle((err) => {
+                if (socketJob(i, x)) {
+                    bucket[i].throttle(() => {
                         bitfinex[i].send(JSON.stringify(subscriptions[x]));
                     });
                 }
             }
+            setInterval(function() {
+                bitfinex[i].send(JSON.stringify({event: 'ping', cid: new Date().getTime()}));
+            }, 3000);
         });
         bitfinex[i].on('error', (error) => {
-            bitfinex[i] = new WebSocket('wss://api.bitfinex.com/ws/2');
+            console.log('ERROR' + error);
+            bitfinex[i].close();
+        });
+        bitfinex[i].on('close', () => {
+            setTimeout(() => {
+                console.log('PM2 Will restart in 30 seconds');
+                process.exit(0);
+            }, 30000);
         });
     }
 };

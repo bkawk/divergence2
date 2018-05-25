@@ -1,10 +1,8 @@
+// @ts-check
 'use strict';
 /**
  * get subscriptions
- * @param {number} timeFrames The value to the left of target
- * @param {number} pairs The tagets value
- * @param {number} apiUrl The value to the right of target
- * @return {string} the string indicating direction
+ * @return {Object} the string indicating direction
  */
 module.exports = function getSubscriptions() {
     const timeFrames = ['15m', '30m', '1h', '3h', '6h', '12h', '1D', '7D'];

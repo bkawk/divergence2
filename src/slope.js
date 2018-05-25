@@ -1,3 +1,4 @@
+// @ts-check
 'use strict';
 const db = require('./db.js');
 /**
@@ -6,7 +7,7 @@ const db = require('./db.js');
  * @param {number} period The tagets value
  * @param {number} direction The value to the right of target
  * @param {number} type The value to the right of target
- * @return {string} the string indicating direction
+ * @return {Object} the string indicating direction
  */
 module.exports = function slope(columns, period, direction, type) {
     return new Promise((resolve, reject) => {
