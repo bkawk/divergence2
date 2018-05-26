@@ -4,7 +4,7 @@ const getBitfinexData = require('./getBitfinexData');
 const memwatch = require('memwatch-next');
 memwatch.on('leak', (info) => {
     console.error('Memory leak detected:\n', info);
-    process.exit(0);
+    // process.exit(0);
 });
 
 setTimeout(function() {

@@ -3,7 +3,7 @@
 const db = require('./db.js');
 const moment = require('moment');
 /**
- * gets and sets the RSI values
+ * Saves the prices to the database
  * @param {String} operation the pair currency
  * @param {string} pair the time frame e.g: 1h
  * @param {string} timeFrame price
@@ -37,7 +37,7 @@ module.exports = function savePrice(operation, pair, timeFrame, price) {
             batch.push(data);
         }
         db(batch, 'batchPrice')
-        .catch((error)=>{
+        .catch((error) => {
             console.log(error);
         });
     };

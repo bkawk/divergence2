@@ -1,4 +1,7 @@
 {
-    // Controls the font size in pixels.
-  "editor.fontSize": 16,
+  "editor.fontSize": 14,
+  "editor.lineHeight": 23,
 }
+
+
+

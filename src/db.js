@@ -34,19 +34,18 @@ const priceSchema = new Schema({
 });
 
 priceSchema.index({time: 1, pair: 1, timeFrame: 1});
+
 const Divergence = mongoose.model('divergence', divergenceSchema);
 const Channel = mongoose.model('channel', channelSchema);
 const Price = mongoose.model('price', priceSchema);
+
+
 const options = {
     autoIndex: true,
     reconnectTries: Number.MAX_VALUE,
     reconnectInterval: 500,
     poolSize: 9,
     bufferMaxEntries: 0,
-    bufferCommands: false,
-    keepAlive: true,
-    socketTimeoutMS: 600000,
-    connectTimeoutMS: 600000,
 };
 
 if (!mongoose.connection.readyState) {
@@ -62,14 +61,7 @@ if (!mongoose.connection.readyState) {
 
 mongoose.Promise = global.Promise;
 mongoose.set('debug', false);
-const mdb = mongoose.connection;
-mdb.on('error', console.error.bind(console, 'connection error:'));
-process.on('SIGINT', () => {
-    mongoose.disconnect().then(()=>{
-        console.log('Mongoose default connection disconnected through app termination');
-        process.exit(0);
-    });
-});
+
 /**
  * Database functions
  * @param {object} data The data needed to compllete the database transaction
@@ -121,7 +113,7 @@ module.exports = function db(data, model) {
             .catch((error) => reject(error));
         }
         if (model === 'getAllChannels') {
-            Channel.find(data, {pair, timeFrame}).lean()
+            Channel.find(data).lean()
             .then((response) => {
                 resolve(response);
             })

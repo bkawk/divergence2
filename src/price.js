@@ -3,11 +3,10 @@
 const db = require('./db.js');
 const savePrice = require('./savePrice.js');
 /**
- * gets and sets the RSI values
- * @param {Array} message The array of prices to create the RSI from
- * @param {Array} socket The array of prices to create the RSI from
+ * Prepares the price to be saved to the database
+ * @param {Array} message The array of prices
  */
-module.exports = function price(message, socket) {
+module.exports = function price(message) {
     const data = message[1];
     const chanId = message[0];
     db(chanId, 'getChannel')
@@ -22,7 +21,7 @@ module.exports = function price(message, socket) {
     })
     .then((channel) => {
         if (channel && data && data.length > 6) {
-            savePrice('batch', channel.pair, channel.timeFrame, data);
+            savePrice('batch', channel.pair, channel.timeFrame, data)
         } else if (channel && channel.pair && channel.timeFrame && data.length > 0) {
             savePrice('single', channel.pair, channel.timeFrame, data);
         }

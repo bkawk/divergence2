@@ -11,7 +11,6 @@ const spike = require('./spike.js');
  */
 module.exports = function enhanceData(pair, timeFrame) {
     return new Promise((resolve, reject) => {
-        const timeStart = new Date().getTime();
         const data = {pair, timeFrame};
         let rsiArray = [];
         let priceArray = [];
@@ -47,8 +46,6 @@ module.exports = function enhanceData(pair, timeFrame) {
                 .catch((error) => {
                     reject(error);
                 });
-                const timeEnd = new Date().getTime();
-                console.log(timeEnd - timeStart);
                 resolve(true);
             }
         })
