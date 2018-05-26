@@ -22,24 +22,24 @@ priceSchema.index({time: 1, pair: 1, timeFrame: 1});
 priceSchema.statics.setEnhance = function(data) {
     return new Promise((resolve, reject) => {
         this.insertMany(data, (err, docs) => {
-          if (err) {
-            console.error(err);
-            return reject(err);
-          }
+            if (err) {
+                console.error(err);
+                return reject(err);
+            }
             resolve(docs);
         });
-      });
+    });
 };
 priceSchema.statics.batchPrice = function(data) {
     return new Promise((resolve, reject) => {
         this.insertMany(data, (err, docs) => {
-          if (err) {
-            console.error(err);
-            return reject(err);
-          }
+            if (err) {
+                console.error(err);
+                return reject(err);
+            }
             resolve(docs);
         });
-      });
+    });
 };
 priceSchema.statics.setPrice = function(data) {
     return new Promise((resolve, reject) => {
@@ -48,7 +48,7 @@ priceSchema.statics.setPrice = function(data) {
             resolve(response);
         })
         .catch((error) => reject(error));
-      });
+    });
 };
 priceSchema.statics.getAllPrices = function(data) {
     return new Promise((resolve, reject) => {
@@ -57,6 +57,6 @@ priceSchema.statics.getAllPrices = function(data) {
             resolve(response);
         })
         .catch((error) => reject(error));
-      });
+    });
 };
 module.exports = mongoose.model('price', priceSchema);

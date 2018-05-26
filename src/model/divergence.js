@@ -18,6 +18,6 @@ divergenceSchema.statics.setDivergence = function(data) {
             resolve(response);
         })
         .catch((error) => reject(error));
-      });
+    });
 };
 module.exports = mongoose.model('divergence', divergenceSchema);

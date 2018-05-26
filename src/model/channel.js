@@ -14,7 +14,7 @@ channelSchema.statics.setChannel = function(data) {
             resolve(response);
         })
         .catch((error) => reject(error));
-      });
+    });
 };
 channelSchema.statics.getChannel = function(data) {
     return new Promise((resolve, reject) => {
@@ -23,7 +23,7 @@ channelSchema.statics.getChannel = function(data) {
             resolve(response);
         })
         .catch((error) => reject(error));
-      });
+    });
 };
 channelSchema.statics.getAllChannels = function(data) {
     return new Promise((resolve, reject) => {
@@ -32,7 +32,7 @@ channelSchema.statics.getAllChannels = function(data) {
             resolve(response);
         })
         .catch((error) => reject(error));
-      });
+    });
 };
 
 module.exports = mongoose.model('channel', channelSchema);
