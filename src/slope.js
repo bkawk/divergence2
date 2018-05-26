@@ -1,6 +1,6 @@
 // @ts-check
 'use strict';
-const db = require('./db.js');
+const divergenceModel = require('./model/divergence');
 /**
  * get subscriptions
  * @param {Object} columns The value to the left of target
@@ -37,11 +37,11 @@ module.exports = function slope(columns, period, direction, type) {
                 const time = columns[1].time;
                 console.log(`Confirmed ${direction} ${type}, ${period-1} Period, ${columns[1].pair}, ${columns[1].timeFrame}. localTime: ${columns[1].localTime} time: ${columns[1].time}`);
                 const data = {columns, direction, type, period, pair, timeFrame, localTime, time};
-                db(data, 'setDivergence')
+                divergenceModel.setDivergence(data)
                 .catch((error)=>{
                     console.log(error);
                 });
-            } 
+            }
         } catch (error) {
             reject(error);
         }

@@ -12,6 +12,9 @@ Install on-premise mongoDB
 - download MongoDB
 - add bin folder to your path
 
+node-gyp windows:
+npm install --global --production windows-build-tools
+
  
 Install dependencies
 

@@ -8,7 +8,7 @@ const getDivergenceData = require('./getDivergenceData');
 // });
 
 setTimeout(function() {
-    console.log('========================= Starting to find divergences!')
+    console.log('========================= Starting to find divergences!');
     getDivergenceData();
 // }, 1026000);
 }, 6000);
