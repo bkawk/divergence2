@@ -3,10 +3,10 @@
 const db = require('./db.js');
 /**
  * get subscriptions
- * @param {number} columns The value to the left of target
+ * @param {Object} columns The value to the left of target
  * @param {number} period The tagets value
- * @param {number} direction The value to the right of target
- * @param {number} type The value to the right of target
+ * @param {String} direction The value to the right of target
+ * @param {String} type The value to the right of target
  * @return {Object} the string indicating direction
  */
 module.exports = function slope(columns, period, direction, type) {

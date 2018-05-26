@@ -106,7 +106,7 @@ module.exports = function db(data, model) {
             .catch((error) => reject(error));
         }
         if (model === 'getChannel') {
-            Channel.findOne({chanId: data})
+            Channel.findOne({chanId: data}, 'key')
             .then((response) => {
                 resolve(response);
             })

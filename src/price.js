@@ -21,7 +21,7 @@ module.exports = function price(message) {
     })
     .then((channel) => {
         if (channel && data && data.length > 6) {
-            savePrice('batch', channel.pair, channel.timeFrame, data)
+            savePrice('batch', channel.pair, channel.timeFrame, data);
         } else if (channel && channel.pair && channel.timeFrame && data.length > 0) {
             savePrice('single', channel.pair, channel.timeFrame, data);
         }
