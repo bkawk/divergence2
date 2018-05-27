@@ -1,6 +1,6 @@
 // @ts-check
 'use strict';
-const db = require('./db.js');
+const channelModel = require('./model/channel');
 const savePrice = require('./savePrice.js');
 /**
  * Prepares the price to be saved to the database
@@ -9,7 +9,7 @@ const savePrice = require('./savePrice.js');
 module.exports = function price(message) {
     const data = message[1];
     const chanId = message[0];
-    db(chanId, 'getChannel')
+    channelModel.getChannel(chanId)
     .then((chan) => {
         if (chan && chan.key) {
             const item = chan.key.split(':');

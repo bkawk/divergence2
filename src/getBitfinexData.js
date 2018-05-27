@@ -7,6 +7,9 @@ const price = require('./price.js');
 const LeakyBucket = require('leaky-bucket');
 const socketAssignment = require('./socketAssignment.js');
 
+/**
+ * Get data from Bitfinex
+ */
 module.exports = function getBitfinexData() {
     const subscriptions = getSubscriptions();
     const socketPerConnection = 50;

@@ -1,45 +1,13 @@
-// @ts-check
-'use strict';
+// require chalk module to give colors to console text
+const chalk = require('chalk');
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const divergenceSchema = new Schema({
-    columns: {type: Array, required: true},
-    direction: {type: String, required: true},
-    type: {type: String, required: true},
-    period: {type: Number, required: true},
-    pair: {type: String, required: true},
-    timeFrame: {type: String, required: true},
-    localTime: {type: String, required: true},
-    time: {type: Number, required: true},
-});
-const channelSchema = new Schema({
-    timeFrame: {type: String, required: true},
-    pair: {type: String, required: true},
-    key: {type: String, required: true, index: true},
-    chanId: {type: Number, required: true, index: true},
-});
-const priceSchema = new Schema({
-    pair: {type: String, required: true},
-    time: {type: Date, required: true},
-    timeFrame: {type: String, required: true},
-    localTime: {type: String, required: true},
-    open: {type: Number, required: true},
-    close: {type: Number, required: true},
-    high: {type: Number, required: true},
-    low: {type: Number, required: true},
-    volume: {type: Number, required: true},
-    rsi: {type: Number},
-    priceSpike: {type: String},
-    rsiSpike: {type: String},
-});
+const connected = chalk.bold.cyan;
+const error = chalk.bold.yellow;
+const disconnected = chalk.bold.red;
+const termination = chalk.bold.magenta;
+const dbURL = 'mongodb://localhost/divergence';
 
-priceSchema.index({time: 1, pair: 1, timeFrame: 1});
-
-const Divergence = mongoose.model('divergence', divergenceSchema);
-const Channel = mongoose.model('channel', channelSchema);
-const Price = mongoose.model('price', priceSchema);
-
-
+// connection options
 const options = {
     autoIndex: true,
     reconnectTries: Number.MAX_VALUE,
@@ -48,83 +16,37 @@ const options = {
     bufferMaxEntries: 0,
 };
 
-if (!mongoose.connection.readyState) {
-    mongoose.connect('mongodb://localhost/divergence', options)
-    .then(() => {
-        console.log('Mongo Connected');
-    },
-    (err) => {
-        console.log('Mongo Connection Error');
-    }
-);
-}
+// set all events
+mongoose.connection.on('connected', function() {
+    console.log(connected('Mongoose default connection is open to ', dbURL));
+});
+
+mongoose.connection.on('error', function(err) {
+    console.log(error('Mongoose default connection has occured '+ err +' error'));
+});
+
+mongoose.connection.on('disconnected', function() {
+    console.log(disconnected('Mongoose default connection is disconnected'));
+});
+process.on('SIGINT', function() {
+    mongoose.connection.close(function() {
+        console.log(termination('Mongoose default connection is disconnected due to application termination'));
+        process.exit(0);
+    });
+});
 
 mongoose.Promise = global.Promise;
 mongoose.set('debug', false);
 
 /**
- * Database functions
- * @param {object} data The data needed to compllete the database transaction
- * @param {string} model The model to insert the data into
- * @return {object} object containing the requested data or the confirmation
+ * An object just to handle connection and the configuration
  */
-module.exports = function db(data, model) {
-    return new Promise((resolve, reject) => {
-        if (model === 'setEnhance') {
-            Price.insertMany(data)
-            .then((response) => {
-                resolve(response);
-            })
-            .catch((error) => reject(error));
-        }
-        if (model === 'batchPrice') {
-            Price.insertMany(data)
-            .then((response) => {
-                resolve(response);
-            })
-            .catch((error) => reject(error));
-        }
-        if (model === 'setDivergence') {
-            Divergence.findOneAndUpdate({localTime: data.localTime, pair: data.pair, timeFrame: data.timeFrame}, {columns: data.columns, direction: data.direction, type: data.type, period: data.period, pair: data.pair, timeFrame: data.timeFrame, localTime: data.localTime, time: data.time}, {upsert: true})
-            .then((response) => {
-                resolve(response);
-            })
-            .catch((error) => reject(error));
-        }
-        if (model === 'setChannel') {
-            Channel.findOneAndUpdate({key: data.key}, {chanId: data.chanId, timeFrame: data.timeFrame, pair: data.pair, key: data.key}, {upsert: true})
-            .then((response) => {
-                resolve(response);
-            })
-            .catch((error) => reject(error));
-        }
-        if (model === 'setPrice') {
-            Price.findOneAndUpdate({localTime: data.localTime, pair: data.pair, timeFrame: data.timeFrame}, {time: data.time, pair: data.pair, timeFrame: data.timeFrame, localTime: data.localTime, open: data.open, close: data.close, high: data.high, low: data.low, volume: data.volume}, {upsert: true})
-            .then((response) => {
-                resolve(response);
-            })
-            .catch((error) => reject(error));
-        }
-        if (model === 'getChannel') {
-            Channel.findOne({chanId: data}, 'key')
-            .then((response) => {
-                resolve(response);
-            })
-            .catch((error) => reject(error));
-        }
-        if (model === 'getAllChannels') {
-            Channel.find(data).lean()
-            .then((response) => {
-                resolve(response);
-            })
-            .catch((error) => reject(error));
-        }
-        if (model === 'getAllPrices') {
-            Price.find(data).sort({time: -1}).limit(100).lean()
-            .then((response) => {
-                resolve(response);
-            })
-            .catch((error) => reject(error));
-        }
+module.exports = function() {
+    mongoose.connect(dbURL, options)
+    .then(() => {
+        console.log(connected('Mongo Connected'));
+    },
+    (err) => {
+        console.log(error('Mongo Connection Error'));
     });
 };

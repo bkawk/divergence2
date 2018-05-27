@@ -1,6 +1,6 @@
 // @ts-check
 'use strict';
-const db = require('./db.js');
+const priceModel = require('./model/price');
 const rsi = require('./rsi.js');
 const spike = require('./spike.js');
 /**
@@ -11,10 +11,9 @@ const spike = require('./spike.js');
  */
 module.exports = function enhanceData(pair, timeFrame) {
     return new Promise((resolve, reject) => {
-        const data = {pair, timeFrame};
         let rsiArray = [];
         let priceArray = [];
-        db(data, 'getAllPrices')
+        priceModel.getAllPrices()
         .then((prices) => {
             if (prices && prices.length >= 100) {
                 return rsi(prices);
@@ -42,7 +41,7 @@ module.exports = function enhanceData(pair, timeFrame) {
                     batch.push(data);
                 };
                 console.log('saving');
-                db(batch, 'setEnhance')
+                priceModel.setEnhance(batch)
                 .catch((error) => {
                     reject(error);
                 });
