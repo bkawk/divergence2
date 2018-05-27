@@ -1,4 +1,4 @@
-import {mongoose} from 'mongoose';
+const mongoose = require('mongoose');
 
 const priceSchema = new mongoose.Schema({
     pair: {type: String, required: true},

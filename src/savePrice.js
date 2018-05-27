@@ -1,7 +1,6 @@
 // @ts-check
 'use strict';
-import moment from 'moment/src/moment';
-// model
+const moment = require('moment');
 const priceModel = require('./model/price');
 
 /**
@@ -11,7 +10,7 @@ const priceModel = require('./model/price');
  * @param {string} timeFrame price
  * @param {Object} price price
  */
-function savePrice(operation, pair, timeFrame, price) {
+module.exports = function savePrice(operation, pair, timeFrame, price) {
     if (operation == 'single') {
         let time = price[0];
         let open = price[1];
@@ -43,7 +42,4 @@ function savePrice(operation, pair, timeFrame, price) {
             console.log(error);
         });
     };
-};
-export {
-    savePrice,
 };

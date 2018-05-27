@@ -1,8 +1,7 @@
 // @ts-check
 'use strict';
-import {nrc} from 'node-run-cmd';
-import {tmp} from 'tmp-promise';
-
+const nrc = require('node-run-cmd');
+const tmp = require('tmp-promise');
 const util = require('util');
 /**
  * A function to start mongod and set the dbpath

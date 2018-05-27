@@ -6,7 +6,7 @@
  * @param {string} types indicates if the array is price or rsi
  * @return {Object} the string indicating direction
  */
-function spike(dataArray, types) {
+module.exports = function spike(dataArray, types) {
     return new Promise((resolve, reject) => {
         let spikeArray = [];
         dataArray.forEach((entry, i) => {
@@ -47,7 +47,4 @@ function spike(dataArray, types) {
         });
         resolve({spikeArray, dataArray});
     });
-};
-export {
-    spike,
 };

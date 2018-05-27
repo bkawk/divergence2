@@ -1,16 +1,16 @@
 // @ts-check
 'use strict';
-import {WebSocket} from 'ws';
-import {LeakyBucket} from 'leaky-bucket';
-import {getSubscriptions} from './getSubscriptions.js';
-import {subscribed} from './subscribed.js';
-import {socketAssignment} from './socketAssignment.js';
-import {price} from './price.js';
+const WebSocket = require('ws');
+const LeakyBucket = require('leaky-bucket');
+const getSubscriptions = require('./getSubscriptions.js');
+const subscribed = require('./subscribed.js');
+const socketAssignment = require('./socketAssignment.js');
+const price = require('./price.js');
 
 /**
  * Get data from Bitfinex
  */
-function getBitfinexData() {
+module.exports = function getBitfinexData() {
     const subscriptions = getSubscriptions();
     const socketPerConnection = 50;
     const subscriptionGroups = Math.ceil(subscriptions.length / socketPerConnection);
@@ -48,6 +48,4 @@ function getBitfinexData() {
         });
     }
 };
-export {
-    getBitfinexData,
-};
+

@@ -1,13 +1,13 @@
 // @ts-check
 'use strict';
 const channelModel = require('./model/channel');
-import {savePrice} from './savePrice.js';
+const savePrice = require('./savePrice.js');
 
 /**
  * Prepares the price to be saved to the database
  * @param {Array} message The array of prices
  */
-function price(message) {
+module.exports = function price(message) {
     const data = message[1];
     const chanId = message[0];
     channelModel.getChannel(chanId)
@@ -30,7 +30,4 @@ function price(message) {
     .catch((error) => {
         console.log(error);
     });
-};
-export {
-    price,
 };

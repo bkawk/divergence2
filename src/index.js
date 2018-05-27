@@ -1,9 +1,9 @@
 // @ts-check
 'use strict';
-import {db} from './db';
-import {getBitfinexData} from './getBitfinexData.js';
-import {startMongoD} from './startMongoD.js';
-import {chalk} from 'chalk';
+const db = require('./db');
+const getBitfinexData = require('./getBitfinexData.js');
+const startMongoD = require('chalk');
+const chalk = require('chalk');
 // chalk colors
 const connected = chalk.bold.cyan;
 const error = chalk.bold.yellow;

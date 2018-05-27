@@ -1,9 +1,9 @@
 // @ts-check
 'use strict';
-import {getSubscriptions} from './getSubscriptions';
-import {LeakyBucket} from 'leaky-bucket';
-import {enhanceData} from './enhanceData.js';
-import {divergence} from './divergence.js';
+const getSubscriptions = require('./getSubscriptions');
+const LeakyBucket = require('leaky-bucket');
+const enhanceData = require('./enhanceData.js');
+const divergence = require('./divergence.js');
 // models
 const priceModel = require('./model/price');
 

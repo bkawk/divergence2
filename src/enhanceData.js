@@ -1,7 +1,7 @@
 // @ts-check
 'use strict';
-import {rsi} from './rsi.js';
-import {spike} from './spike.js';
+const rsi = require('./rsi.js');
+const spike = require('./spike.js');
 // models
 const priceModel = require('./model/price');
 

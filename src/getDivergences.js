@@ -1,6 +1,6 @@
 // @ts-check
 'use strict';
-import {getDivergenceData} from './getDivergenceData';
+const getDivergenceData = require('./getDivergenceData');
 // const memwatch = require('memwatch-next');
 // memwatch.on('leak', (info) => {
 //     console.error('Memory leak detected:\n', info);

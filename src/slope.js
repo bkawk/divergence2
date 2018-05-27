@@ -9,7 +9,7 @@ const divergenceModel = require('./model/divergence');
  * @param {String} type The value to the right of target
  * @return {Object} the string indicating direction
  */
-function slope(columns, period, direction, type) {
+module.exports = function slope(columns, period, direction, type) {
     return new Promise((resolve, reject) => {
         try {
             const priceY1 = columns[1].close;
@@ -46,7 +46,4 @@ function slope(columns, period, direction, type) {
             reject(error);
         }
     });
-};
-export {
-    slope,
 };

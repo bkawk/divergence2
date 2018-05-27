@@ -1,6 +1,6 @@
 // require chalk module to give colors to console text
-import {chalk} from 'chalk';
-import {mongoose} from 'mongoose';
+const chalk = require('chalk');
+const mongoose = require('mongoose');
 
 // chalk colors
 const connected = chalk.bold.cyan;
@@ -45,9 +45,6 @@ mongoose.set('debug', true);
  * An object just to handle connection and the configuration
  * @return {Promise} promise
  */
-function db() {
+module.exports = function() {
     return mongoose.connect(dbURL, options);
-};
-export {
-    db,
 };
