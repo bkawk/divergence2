@@ -16,7 +16,7 @@ const priceSchema = new mongoose.Schema({
 });
 
 // composite index
-priceSchema.index({localTime: 1, pair: 1, timeFrame: 1});
+priceSchema.index({time: 1, pair: 1, timeFrame: 1});
 
 
 // static methods

@@ -13,7 +13,6 @@ module.exports = function getDivergenceData() {
     const loopTime = maxWaitingTime * 1000;
     const bucket = new LeakyBucket({capacity, interval, maxWaitingTime});
     setInterval(() => {
-        console.log('Starting next pass now');
         for (let i = 0; i < subscriptions.length; i++) {
             const key = subscriptions[i].key;
             const item = key.split(':');

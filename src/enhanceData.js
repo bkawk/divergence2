@@ -13,7 +13,8 @@ module.exports = function enhanceData(pair, timeFrame) {
     return new Promise((resolve, reject) => {
         let rsiArray = [];
         let priceArray = [];
-        priceModel.getAllPrices()
+        const data = {timeFrame, pair};
+        priceModel.getAllPrices(data) // TODO: Shouldnt we be ppassing in data here?
         .then((prices) => {
             if (prices && prices.length >= 100) {
                 return rsi(prices);
