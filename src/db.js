@@ -36,17 +36,12 @@ process.on('SIGINT', function() {
 });
 
 mongoose.Promise = global.Promise;
-mongoose.set('debug', false);
+mongoose.set('debug', true);
 
 /**
  * An object just to handle connection and the configuration
+ * @return {Promise} promise
  */
 module.exports = function() {
-    mongoose.connect(dbURL, options)
-    .then(() => {
-        console.log(connected('Mongo Connected'));
-    },
-    (err) => {
-        console.log(error('Mongo Connection Error'));
-    });
+    return mongoose.connect(dbURL, options);
 };
