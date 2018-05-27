@@ -6,7 +6,7 @@
  * @param {number} x The tagets value
  * @return {boolean} the string indicating direction
  */
-module.exports = function socketAssignment(y, x) {
+function socketAssignment(y, x) {
     return ((y === 0 && x <= 50) ||
         (y === 1 && x > 50 && x <= 100) ||
         (y === 2 && x > 100 && x <= 150) ||
@@ -16,4 +16,7 @@ module.exports = function socketAssignment(y, x) {
         (y === 6 && x > 300 && x <= 350) ||
         (y === 7 && x > 350 && x <= 450)
     );
+};
+export {
+    socketAssignment,
 };

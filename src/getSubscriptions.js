@@ -4,7 +4,7 @@
  * get subscriptions
  * @return {Object} the string indicating direction
  */
-module.exports = function getSubscriptions() {
+function getSubscriptions() {
     const timeFrames = ['15m', '30m', '1h', '3h', '6h', '12h', '1D', '7D'];
     const pairs = ['EOSUSD', 'ZRXUSD', 'AIDUSD', 'AIOUSD', 'REPUSD', 'AVTUSD', 'BATUSD', 'BTCUSD', 'BCHUSD', 'BTGUSD', 'BFTUSD', 'CFIUSD', 'DAIUSD', 'DASHUSD', 'MNAUSD', 'ETPUSD', 'EDUUSD', 'ETHUSD', 'EDOUSD', 'ETCUSD', 'FUNUSD', 'GNTUSD', 'IOSUSD', 'IOTAUSD', 'LTCUSD', 'LRCUSD', 'MTNUSD', 'XMRUSD', 'NEOUSD', 'ODEUSD', 'OMGUSD', 'QASHUSD', 'QTUMUSD', 'RCNUSD', 'RDNUSD', 'RRTUSD', 'REQUSD', 'XRPUSD', 'SANUSD', 'SNGUSD', 'AGIUSD', 'SPKUSD', 'SNTUSD', 'DATAUSD', 'TRXUSD', 'TNBUSD', 'WAXUSD', 'YYWUSD', 'ZECUSD', 'ELFUSD', 'RLCUSD'];
     // const pairs = ['EOSUSD'];
@@ -18,4 +18,7 @@ module.exports = function getSubscriptions() {
         }
     }
     return subscriptions;
+};
+export {
+    getSubscriptions,
 };

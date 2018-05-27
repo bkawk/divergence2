@@ -1,7 +1,9 @@
 // @ts-check
 'use strict';
-const moment = require('moment');
+import moment from 'moment/src/moment';
+// model
 const priceModel = require('./model/price');
+
 /**
  * Saves the prices to the database
  * @param {String} operation the pair currency
@@ -9,7 +11,7 @@ const priceModel = require('./model/price');
  * @param {string} timeFrame price
  * @param {Object} price price
  */
-module.exports = function savePrice(operation, pair, timeFrame, price) {
+function savePrice(operation, pair, timeFrame, price) {
     if (operation == 'single') {
         let time = price[0];
         let open = price[1];
@@ -20,7 +22,7 @@ module.exports = function savePrice(operation, pair, timeFrame, price) {
         let localTime = moment(time).format();
         let data = {pair, timeFrame, open, close, high, low, volume, localTime, time};
         priceModel.setPrice(data)
-        .catch((error)=>{
+        .catch((error) => {
             console.log(error);
         });
     } else if (operation == 'batch') {
@@ -41,4 +43,7 @@ module.exports = function savePrice(operation, pair, timeFrame, price) {
             console.log(error);
         });
     };
+};
+export {
+    savePrice,
 };

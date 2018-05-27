@@ -1,0 +1,32 @@
+// @ts-check
+'use strict';
+import {nrc} from 'node-run-cmd';
+import {tmp} from 'tmp-promise';
+
+const util = require('util');
+/**
+ * A function to start mongod and set the dbpath
+ * @return {Promise} message The array of prices
+ */
+function startMongoD() {
+    return new Promise((resolve, reject) => {
+        tmp.dir({prefix: 'mongo_'})
+        .then((directory) => {
+            console.log('db path: ', directory.path);
+            let mongodCmd = util.format('mongod --dbpath=%s', directory.path);
+            let processCallback = function(output) {
+                console.log(output);
+                if (output.toString().indexOf('waiting for connections on port 27017') > -1) {
+                    resolve();
+                }
+            };
+            let errorCallback = function(output) {
+                reject();
+            };
+            nrc.run(mongodCmd, {onData: processCallback, onError: errorCallback});
+        });
+    });
+};
+export {
+    startMongoD,
+};

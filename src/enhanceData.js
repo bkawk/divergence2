@@ -1,20 +1,22 @@
 // @ts-check
 'use strict';
+import {rsi} from './rsi.js';
+import {spike} from './spike.js';
+// models
 const priceModel = require('./model/price');
-const rsi = require('./rsi.js');
-const spike = require('./spike.js');
+
 /**
  * Enhance the data with RSI and spikes
  * @param {string} pair The instrument pair
  * @param {string} timeFrame The time frame
  * @return {Object} somthing
  */
-module.exports = function enhanceData(pair, timeFrame) {
+function enhanceData(pair, timeFrame) {
     return new Promise((resolve, reject) => {
         let rsiArray = [];
         let priceArray = [];
         const data = {timeFrame, pair};
-        priceModel.getAllPrices(data) // TODO: Shouldnt we be ppassing in data here?
+        priceModel.getAllPrices(data)
         .then((prices) => {
             if (prices && prices.length >= 100) {
                 return rsi(prices);
@@ -53,4 +55,7 @@ module.exports = function enhanceData(pair, timeFrame) {
             reject(error);
         });
     });
+};
+export {
+    enhanceData,
 };

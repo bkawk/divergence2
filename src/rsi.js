@@ -1,12 +1,12 @@
 // @ts-check
 'use strict';
-const RSI = require('@solazu/technicalindicators').RSI;
+import {RSI} from '@solazu/technicalindicators';
 /**
  * gets and sets the RSI values
  * @param {Array} priceArray The array of prices to create the RSI from
  * @return {Object} two arrays for price and RSI
  */
-module.exports = function rsi(priceArray) {
+function rsi(priceArray) {
     return new Promise((resolve, reject) => {
         let values = [];
         for (let i = 0; i <= 99; ++i) {
@@ -18,4 +18,7 @@ module.exports = function rsi(priceArray) {
             resolve({rsiArray, priceArray});
         }
     });
+};
+export {
+    rsi,
 };

@@ -1,10 +1,13 @@
 // require chalk module to give colors to console text
-const chalk = require('chalk');
-const mongoose = require('mongoose');
+import {chalk} from 'chalk';
+import {mongoose} from 'mongoose';
+
+// chalk colors
 const connected = chalk.bold.cyan;
 const error = chalk.bold.yellow;
 const disconnected = chalk.bold.red;
 const termination = chalk.bold.magenta;
+// database url
 const dbURL = 'mongodb://localhost/divergence';
 
 // connection options
@@ -42,6 +45,9 @@ mongoose.set('debug', true);
  * An object just to handle connection and the configuration
  * @return {Promise} promise
  */
-module.exports = function() {
+function db() {
     return mongoose.connect(dbURL, options);
+};
+export {
+    db,
 };

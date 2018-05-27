@@ -1,11 +1,16 @@
 // @ts-check
 'use strict';
+import {getSubscriptions} from './getSubscriptions';
+import {LeakyBucket} from 'leaky-bucket';
+import {enhanceData} from './enhanceData.js';
+import {divergence} from './divergence.js';
+// models
 const priceModel = require('./model/price');
-const divergence = require('./divergence.js');
-const enhanceData = require('./enhanceData.js');
-const getSubscriptions = require('./getSubscriptions');
-const LeakyBucket = require('leaky-bucket');
-module.exports = function getDivergenceData() {
+
+/**
+ * getDivergenceData
+ */
+function getDivergenceData() {
     const subscriptions = getSubscriptions();
     const capacity = 10;
     const interval = 0.5;
@@ -39,4 +44,7 @@ module.exports = function getDivergenceData() {
             });
         }
     }, loopTime);
+};
+export {
+    getDivergenceData,
 };

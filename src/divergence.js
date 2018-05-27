@@ -1,12 +1,12 @@
 // @ts-check
 'use strict';
-const slope = require('./slope.js');
+import {slope} from './slope.js';
 /**
  * Divergence
  * @param {object} columns The data to be evaluated
  * @return {object} object containing promise
  */
-module.exports = function divergence(columns) {
+function divergence(columns) {
     return new Promise((resolve, reject) => {
         columns.forEach((unused, i) => {
             if (
@@ -53,4 +53,7 @@ module.exports = function divergence(columns) {
         });
         resolve();
     });
+};
+export {
+    divergence,
 };

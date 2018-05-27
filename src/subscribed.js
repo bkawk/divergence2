@@ -5,7 +5,7 @@ const channelModel = require('./model/channel');
  * Saves the channel data we get from bitfinex after subscribing
  * @param {Object} msg The array of prices to create the RSI from
  */
-module.exports = function subscribed(msg) {
+function subscribed(msg) {
     const key = msg.key;
     const chanId = msg.chanId;
     const item = key.split(':');
@@ -16,4 +16,7 @@ module.exports = function subscribed(msg) {
     .catch((error) => {
         console.log(error);
     });
+};
+export {
+    subscribed,
 };

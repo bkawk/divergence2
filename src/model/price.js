@@ -1,4 +1,4 @@
-let mongoose = require('mongoose');
+import {mongoose} from 'mongoose';
 
 const priceSchema = new mongoose.Schema({
     pair: {type: String, required: true},
@@ -17,7 +17,6 @@ const priceSchema = new mongoose.Schema({
 
 // composite index
 priceSchema.index({time: 1, pair: 1, timeFrame: 1});
-
 
 // static methods
 priceSchema.statics.setEnhance = function(data) {
@@ -61,3 +60,4 @@ priceSchema.statics.getAllPrices = function(data) {
     });
 };
 module.exports = mongoose.model('price', priceSchema);
+

@@ -4,7 +4,7 @@ const channelSchema = new mongoose.Schema({
     timeFrame: {type: String, required: true},
     pair: {type: String, required: true},
     key: {type: String, required: true, index: true},
-    chanId: {type: Number, required: true, index: true},
+    chanId: {type: Number, required: true, index: true, unique: true},
 });
 // static methods
 channelSchema.statics.setChannel = function(data) {
