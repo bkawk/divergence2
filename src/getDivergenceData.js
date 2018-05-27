@@ -5,7 +5,6 @@ const divergence = require('./divergence.js');
 const enhanceData = require('./enhanceData.js');
 const getSubscriptions = require('./getSubscriptions');
 const LeakyBucket = require('leaky-bucket');
-
 module.exports = function getDivergenceData() {
     const subscriptions = getSubscriptions();
     const capacity = 10;
