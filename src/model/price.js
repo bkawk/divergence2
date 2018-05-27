@@ -17,7 +17,9 @@ const priceSchema = new mongoose.Schema({
 
 // composite index
 priceSchema.index({localTime: 1, pair: 1, timeFrame: 1});
-
+// unique index related to insertMany
+// to define unique row, what pair, on which time frame and time/localtime
+// priceSchema.index({pair: 1, time: 1, timeFrame: 1, localTime: 1}, {unique: true});
 
 // static methods
 priceSchema.statics.setEnhance = function(data) {
@@ -33,7 +35,9 @@ priceSchema.statics.setEnhance = function(data) {
 };
 priceSchema.statics.batchPrice = function(data) {
     return new Promise((resolve, reject) => {
-        this.insertMany(data, (err, docs) => {
+        // docs, options, callback
+        // set it to proceed
+        this.insertMany(data, {ordered: false}, (err, docs) => {
             if (err) {
                 console.error(err);
                 return reject(err);
