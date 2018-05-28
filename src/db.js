@@ -7,8 +7,7 @@ const connected = chalk.bold.cyan;
 const error = chalk.bold.yellow;
 const disconnected = chalk.bold.red;
 const termination = chalk.bold.magenta;
-// database url
-const dbURL = 'mongodb://localhost/divergence';
+
 
 // connection options
 const options = {
@@ -22,7 +21,7 @@ const options = {
 
 // set all events
 mongoose.connection.on('connected', function() {
-    console.log(connected('Mongoose default connection is open to ', dbURL));
+    console.log(connected('Mongoose default connection is open to ', process.env.MONGODB_URL));
 });
 
 mongoose.connection.on('error', function(err) {
@@ -44,8 +43,10 @@ mongoose.set('debug', true);
 
 /**
  * An object just to handle connection and the configuration
+ * @argument {string} dbURL
  * @return {Promise} promise
  */
-module.exports = function() {
+module.exports = function(dbURL) {
+    process.env.MONGODB_URL = dbURL;
     return mongoose.connect(dbURL, options);
 };
