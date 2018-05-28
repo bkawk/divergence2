@@ -2,7 +2,7 @@
 'use strict';
 const db = require('./db');
 const getBitfinexData = require('./getBitfinexData.js');
-const startMongoD = require('chalk');
+const startMongoD = require('./startMongoD');
 const chalk = require('chalk');
 // chalk colors
 const connected = chalk.bold.cyan;
