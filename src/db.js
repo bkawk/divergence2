@@ -17,6 +17,7 @@ const options = {
     reconnectInterval: 500,
     poolSize: 9,
     bufferMaxEntries: 0,
+    keepAlive: 1,
 };
 
 // set all events

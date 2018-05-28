@@ -7,7 +7,7 @@ const util = require('util');
  * A function to start mongod and set the dbpath
  * @return {Promise} message The array of prices
  */
-function startMongoD() {
+module.exports = function startMongoD() {
     return new Promise((resolve, reject) => {
         tmp.dir({prefix: 'mongo_'})
         .then((directory) => {
@@ -25,7 +25,4 @@ function startMongoD() {
             nrc.run(mongodCmd, {onData: processCallback, onError: errorCallback});
         });
     });
-};
-export {
-    startMongoD,
 };
