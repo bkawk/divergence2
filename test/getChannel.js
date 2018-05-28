@@ -4,7 +4,7 @@ const chai = require('chai'), should = chai.should, expect = chai.expect, assert
 chai.should();
 chai.use(chaiAsPromised);
 sinon = require('sinon');
-const getChannel = require('../src/getChannel.js');
+// const getChannel = require('../src/getChannel.js');
 const withStatus = require('promise-with-status')(Promise);
 
 describe('get Channel tests', () => {

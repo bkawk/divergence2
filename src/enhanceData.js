@@ -11,7 +11,7 @@ const priceModel = require('./model/price');
  * @param {string} timeFrame The time frame
  * @return {Object} somthing
  */
-function enhanceData(pair, timeFrame) {
+module.exports = function enhanceData(pair, timeFrame) {
     return new Promise((resolve, reject) => {
         let rsiArray = [];
         let priceArray = [];
@@ -56,6 +56,4 @@ function enhanceData(pair, timeFrame) {
         });
     });
 };
-export {
-    enhanceData,
-};
+

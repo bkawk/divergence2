@@ -10,7 +10,7 @@ const priceModel = require('./model/price');
 /**
  * getDivergenceData
  */
-function getDivergenceData() {
+module.exports = function getDivergenceData() {
     const subscriptions = getSubscriptions();
     const capacity = 10;
     const interval = 0.5;
@@ -44,7 +44,4 @@ function getDivergenceData() {
             });
         }
     }, loopTime);
-};
-export {
-    getDivergenceData,
 };
