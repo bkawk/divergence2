@@ -7,9 +7,10 @@ const chalk = require('chalk');
 // chalk colors
 const connected = chalk.bold.cyan;
 const error = chalk.bold.yellow;
-
+// database url
+const dbURL = 'mongodb://localhost/divergence';
 // call only once
-db()
+db(dbURL)
 .then(() => {
     getBitfinexData();
     console.log(connected('Mongo Connected'));
