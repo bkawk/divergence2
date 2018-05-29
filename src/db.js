@@ -46,7 +46,7 @@ mongoose.set('debug', true);
  * @argument {string} dbURL
  * @return {Promise} promise
  */
-module.exports = function(dbURL) {
+    module.exports = function(dbURL) {
     process.env.MONGODB_URL = dbURL;
     return mongoose.connect(dbURL, options);
 };
