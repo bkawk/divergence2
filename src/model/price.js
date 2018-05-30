@@ -15,8 +15,9 @@ const priceSchema = new mongoose.Schema({
     rsiSpike: {type: String},
 });
 // composite index, it will triggered by the 1st column, look at setprice
-priceSchema.index({localTime: 1, pair: 1, timeFrame: 1});
-
+priceSchema.index({localTime: 1, pair: 1, timeFrame: 1}, {unique: true});
+// second index, unique index
+// priceSchema.index({time: 1, open: 1, close: 1, high: 1, low: 1, volume: 1, pair: 1, timeFrame: 1}, {unique: true});
 // static methods
 priceSchema.statics.setEnhance = function(data) {
     return new Promise((resolve, reject) => {

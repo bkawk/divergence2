@@ -20,10 +20,7 @@ module.exports = function savePrice(operation, pair, timeFrame, price) {
         let volume = price[5];
         let localTime = moment(time).format();
         let data = {pair, timeFrame, open, close, high, low, volume, localTime, time};
-        priceModel.setPrice(data)
-        .catch((error) => {
-            console.log(error);
-        });
+        return priceModel.setPrice(data);
     } else if (operation == 'batch') {
         let batch = [];
         for (let i = 0; i < price.length; i++) {
@@ -37,9 +34,6 @@ module.exports = function savePrice(operation, pair, timeFrame, price) {
             let data = {pair, timeFrame, open, close, high, low, volume, localTime, time};
             batch.push(data);
         }
-        priceModel.batchPrice(batch)
-        .catch((error) => {
-            console.log(error);
-        });
+        return priceModel.batchPrice(batch);
     };
 };
